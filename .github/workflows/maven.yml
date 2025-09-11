@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
@@ -25,3 +25,7 @@ jobs:
       run: mvn clean install
     - name: Submit dependency snapshot
       uses: advanced-security/maven-dependency-submission-action@v3
+    - name: Submit dependency snapshot
+      if: false 
+      uses: advanced-security/maven-dependency-submission-action@v3
+
