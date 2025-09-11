@@ -1,5 +1,4 @@
 package com.sinara.model;
-
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +11,8 @@ public class Empresa {
     private boolean status;
     private final Date inicioPlano;
     private int plano;
-    // Construtor
 
+    // Construtor
     public Empresa(String cnpj, String nome, List<String> email, Ramos ramo, List<Long> telefone, boolean status,
                    Date inicioPlano, int plano) {
         this.cnpj = cnpj; this.nome = nome; this.email = email; this.ramo = ramo; this.telefone = telefone;
@@ -72,12 +71,11 @@ public class Empresa {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
     public void setPlano(int plano) {
         this.plano = plano;
     }
 
-    // Enum Ramos
+    // Enums
     public enum Ramos {
         Alimentacao,
         Farmaceutico,
