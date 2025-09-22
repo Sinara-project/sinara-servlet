@@ -1,3 +1,4 @@
 target/
 anotacao.txt
 .idea/
+.env
