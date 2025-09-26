@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 
 public class Pagamentos {
-    private int id;
+    private Integer id;
     private String cpfAdministrador;
     private int valor;
     private LocalDate dataPagamento;
@@ -12,6 +12,12 @@ public class Pagamentos {
 
     public int getId() {
         return id;
+    }
+    public void setId(int id) {
+        if (this.id == null) {
+            this.id = id;
+        }
+        throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
     }
 
     public String getCpfAdministrador() {
@@ -41,7 +47,6 @@ public class Pagamentos {
         pix,
         cartaoCredito,
         cartaoDebito,
-        dinheiro,
-        cheque
+        dinheiro
     }
 }

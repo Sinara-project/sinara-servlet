@@ -3,33 +3,42 @@ import java.util.Date;
 import java.util.List;
 
 public class Empresa {
+    private Integer id;
     private final String cnpj;
     private String nome;
-    private List<String> email;
-    private Ramos ramo;
-    private List<Long> telefone;
+    private String email;
+    private String ramo;
+    private String telefone;
     private boolean status;
     private final Date inicioPlano;
     private int plano;
 
     // Construtor
-    public Empresa(String cnpj, String nome, List<String> email, Ramos ramo, List<Long> telefone, boolean status,
+    public Empresa(String cnpj, String nome, String email, String ramo, String telefone, boolean status,
                    Date inicioPlano, int plano) {
-        this.cnpj = cnpj; this.nome = nome; this.email = email; this.ramo = ramo; this.telefone = telefone;
+        this.id = null; this.cnpj = cnpj; this.nome = nome; this.email = email; this.ramo = ramo; this.telefone = telefone;
         this.status = status; this.inicioPlano = inicioPlano; this.plano = plano;
     }
 
     // Getters
+    public Integer getId() {
+        return this.id;
+    }
+
+    public String getCnpj() {
+        return this.cnpj;
+    }
+
     public String getNome() {
         return this.nome;
     }
-    public List<String> getEmail() {
+    public String getEmail() {
         return this.email;
     }
-    public Ramos getRamo() {
+    public String getRamo() {
         return this.ramo;
     }
-    public List<Long> getTelefone() {
+    public String getTelefone() {
         return this.telefone;
     }
     public boolean isStatus() {
@@ -38,49 +47,33 @@ public class Empresa {
     public Date getInicioPlano() {
         return this.inicioPlano;
     }
+    public int getPlano() {
+        return plano;
+    }
 
     // Setters
+    public void setId(int id) {
+        if (this.id == null) {
+            this.id = id;
+        }
+        throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
+    }
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public void addEmail(String email) {
-        this.email.add(email);
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public boolean removeEmail(int index) {
-        if (this.email.get(index)!=null) this.email.remove(index);
-        return this.email.get(index)!=null;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
-    public boolean removeEmail(String email) {
-        if (this.email.contains(email)) this.email.remove(email);
-        return this.email.contains(email);
-    }
-    public void setRamo(Ramos ramo) {
+    public void setRamo(String ramo) {
         this.ramo = ramo;
-    }
-    public void addTelefone(long telefone) {
-        this.telefone.add(telefone);
-    }
-    public boolean removeTelefone(int index) {
-        if (this.telefone.get(index)!=null) this.telefone.remove(index);
-        return this.telefone.get(index)!=null;
-    }
-    public boolean removeTelefone(long telefone) {
-        if (this.telefone.contains(telefone)) this.telefone.remove(telefone);
-        return this.telefone.contains(telefone);
     }
     public void setStatus(boolean status) {
         this.status = status;
     }
     public void setPlano(int plano) {
         this.plano = plano;
-    }
-
-    // Enums
-    public enum Ramos {
-        Alimentacao,
-        Farmaceutico,
-        Siderurgia,
-        Automobilistica,
-        Outros
     }
 }
