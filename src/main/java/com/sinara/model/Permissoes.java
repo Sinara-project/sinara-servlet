@@ -17,6 +17,14 @@ public class Permissoes {
         this.aprovarRegistros = false;
         this.gerenciarUsuarios = false;
     }
+    public Permissoes(int id) {
+        this.id = id;
+        this.inserirDados = false;
+        this.editarDados = false;
+        this.visualizarRegistros = false;
+        this.aprovarRegistros = false;
+        this.gerenciarUsuarios = false;
+    }
     public Permissoes(boolean inserirDados, boolean editarDados, boolean visualizarRegistros,
                       boolean aprovarRegistros, boolean gerenciarUsuarios) {
         this.id = null;
