@@ -55,4 +55,14 @@ public class Administrador {
     public String getCnpjEmpresa() {
         return cnpjEmpresa;
     }
+    public String getCpf() {
+        return cpf;
+    }
+    public Permissoes getPermissoes() {
+        return permissoes;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    
 }
