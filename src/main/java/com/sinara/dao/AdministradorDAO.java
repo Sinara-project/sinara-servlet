@@ -3,6 +3,8 @@ package com.sinara.dao;
 import com.sinara.connection.ConexaoDB;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class AdministradorDAO {
@@ -40,8 +42,8 @@ public class AdministradorDAO {
             }
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
-            return resultado;
         }
+        return resultado;
     }
     // Alterações
 
@@ -129,10 +131,10 @@ public class AdministradorDAO {
         }
     }
 
-    public ResultSet buscarPorFiltro(int id, Map<String, Object> campos) {
+    public List<Administrador> buscarPorFiltro(int id, Map<String, Object> campos) {
         ConexaoDB conMan = new ConexaoDB();
-        boolean resultado = false;
         int contador = 1;
+        List<Administrador> listaAdministradores = new LinkedList<Administrador>();
 
         try (Connection conn = conMan.conectar();) {
             String sql = "SELECT * FROM Administrador WHERE ";
@@ -151,7 +153,15 @@ public class AdministradorDAO {
                     if ((contador/2)-1 < campos.size()) contador++;
                 }
                 conMan.desconectar(conn);
-                return pstm.executeQuery();
+                ResultSet rset = pstm.executeQuery();
+                while (rset.next()) {
+                    listaAdministradores.add(new Administrador(rset.getString("nome"),
+                            rset.getString("email_admin"), rset.getString("senha"),
+                            rset.getString("cpf"), rset.getString("cargo"),
+                            rset.getString("id_empresa")));
+                    listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
+                }
+                return listaAdministradores;
             }
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
