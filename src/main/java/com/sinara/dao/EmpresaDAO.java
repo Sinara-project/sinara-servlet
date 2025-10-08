@@ -1,5 +1,7 @@
 package com.sinara.dao;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.sinara.connection.ConexaoDB;
@@ -183,30 +185,42 @@ public class EmpresaDAO {
         }
     }
 
-    public ResultSet buscarPorFiltro(int id, Map<String, Object> campos) {
+    public List<Empresa> buscarPorFiltro(Map<String, Object> campos) {
         ConexaoDB conMan = new ConexaoDB();
-        boolean resultado = false;
-        int contador = 1;
+        List<Empresa> listaAdministradores = new LinkedList<Empresa>();
+        int contador = 0;
 
         try (Connection conn = conMan.conectar();) {
             String sql = "SELECT * FROM Empresa WHERE ";
-            for (int i = 0; i < campos.size(); i++) {
-                sql+="? = ?";
-                if (i+1 < campos.size()) sql+=" AND ";
+
+            // script sql recebe mais um set para busca a cada filtro fornecido
+            for (String s : campos.keySet()) {
+                sql+=s+" = ?";
+                contador++;
+                if (contador < campos.size()) sql+=" AND ";
             }
+
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                for (String s : campos.keySet()) {
-                    pstm.setString(contador, s);
-                    pstm.setObject(contador++, campos.get(s));
-                    if ((contador/2)-1 < campos.size()) contador++;
+                contador = 1;
+                // pstm seta os campos de acordo com a quantidade e valores no Map
+                for (Object s : campos.values()) {
+                    pstm.setObject(contador++, s);
                 }
-                conMan.desconectar(conn);
-                return pstm.executeQuery();
+                ResultSet rset = pstm.executeQuery();
+                while (rset.next()) {
+                    listaAdministradores.add(new Empresa(rset.getString("cnpj"),
+                            rset.getString("nome"), rset.getString("email_corporativo"),
+                            rset.getString("ramo_atuacao"), rset.getString("telefone"),
+                            rset.getBoolean("status_atividade"), rset.getDate("inicio_plano"),
+                            rset.getString("plano").charAt(0)));
+                    listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
+                }
             }
+            conMan.desconectar(conn);
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
-            return null;
         }
+        return listaAdministradores;
     }
 
     public boolean deletarEmpresa(int id) {

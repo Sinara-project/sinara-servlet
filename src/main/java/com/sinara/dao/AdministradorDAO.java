@@ -131,28 +131,27 @@ public class AdministradorDAO {
         }
     }
 
-    public List<Administrador> buscarPorFiltro(int id, Map<String, Object> campos) {
+    public List<Administrador> buscarPorFiltro(Map<String, Object> campos) {
         ConexaoDB conMan = new ConexaoDB();
-        int contador = 1;
         List<Administrador> listaAdministradores = new LinkedList<Administrador>();
+        int i = 0;
 
         try (Connection conn = conMan.conectar();) {
             String sql = "SELECT * FROM Administrador WHERE ";
 
             // script sql recebe mais um set para busca a cada filtro fornecido
-            for (int i = 0; i < campos.size(); i++) {
-                sql+="? = ?";
-                if (i+1 < campos.size()) sql+=" AND "; // Se houver mais campos, adicionar um "and" para cláusula where
+            for (String s : campos.keySet()) {
+                sql+=s+" = ?";
+                i++;
+                if (i < campos.size()) sql+=" AND ";
             }
 
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+                i = 1;
                 // pstm seta os campos de acordo com a quantidade e valores no Map
-                for (String s : campos.keySet()) {
-                    pstm.setString(contador, s);
-                    pstm.setObject(contador++, campos.get(s));
-                    if ((contador/2)-1 < campos.size()) contador++;
+                for (Object s : campos.values()) {
+                    pstm.setObject(i++, s);
                 }
-                conMan.desconectar(conn);
                 ResultSet rset = pstm.executeQuery();
                 while (rset.next()) {
                     listaAdministradores.add(new Administrador(rset.getString("nome"),
@@ -161,12 +160,12 @@ public class AdministradorDAO {
                             rset.getString("id_empresa")));
                     listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
-                return listaAdministradores;
             }
+            conMan.desconectar(conn);
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
-            return null;
         }
+        return listaAdministradores;
     }
 
     public boolean deletarAdministrador(int idPerm, int id) {
