@@ -1,7 +1,6 @@
 package com.sinara.model;
 
-import java.time.LocalDate;
-import java.util.List;
+
 
 public class Operario {
     private Integer id;
@@ -9,11 +8,13 @@ public class Operario {
     private String nome;
     private String email;
     private String cargo;
-    private final int cnpjEmpresa;
+    private String senha;
+    private final String cnpjEmpresa; // id
     private Permissoes permissoes;
+    private String horarioTrabalho;
 
     //Construtor
-    public Operario(String cpf, String nome, String email, String cargo, int cnpj_empresa) {
+    public Operario(String cpf, String nome, String email, String cargo, String cnpj_empresa, String horarioTrabalho) {
         this.id = null;
         this.cpf = cpf;
         this.nome = nome;
@@ -21,6 +22,19 @@ public class Operario {
         this.cargo = cargo;
         this.cnpjEmpresa = cnpj_empresa;
         this.permissoes = new Permissoes();
+        this.horarioTrabalho = horarioTrabalho;
+    }
+    
+    public Operario(String cpf, String nome, String email, String cargo, String cnpj_empresa, String horarioTrabalho, String senha) {
+        this.id = null;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.cargo = cargo;
+        this.cnpjEmpresa = cnpj_empresa;
+        this.permissoes = new Permissoes();
+        this.horarioTrabalho = horarioTrabalho;
+        this.senha = senha;
     }
 
     //Getters
@@ -39,7 +53,7 @@ public class Operario {
     public String getCargo() {
         return cargo;
     }
-    public int getCnpjEmpresa() {
+    public String getCnpjEmpresa() {
         return cnpjEmpresa;
     }
 
@@ -59,4 +73,21 @@ public class Operario {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
+    public Permissoes getPermissoes() {
+        return permissoes;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    public String getHorarioTrabalho() {
+        return horarioTrabalho;
+    }
+    public void setHorarioTrabalho(String horarioTrabalho) {
+        this.horarioTrabalho = horarioTrabalho;
+    }
+    
+
 }
