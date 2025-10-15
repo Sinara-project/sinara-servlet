@@ -1,7 +1,5 @@
 package com.sinara.model;
 
-
-
 public class Operario {
     private Integer id;
     private final String cpf;
