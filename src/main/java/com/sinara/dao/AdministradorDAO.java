@@ -1,7 +1,6 @@
 package com.sinara.dao;
-
 import com.sinara.connection.ConexaoDB;
-
+import com.sinara.model.Administrador;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,13 +16,13 @@ public class AdministradorDAO {
             String sql = "INSERT INTO Permissoes (inserir_dados, editar_dados, visualizar_relatorios, aprovar_registros, gerenciar_usuarios) " +
                     "VALUES (?, ?, ?, ?, ?);RETURNING id";
 //                    "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissao) VALUES (?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement pstmPerm = conn.prepareStatement(sql)) {
+            try (PreparedStatement pstmPerm = conn.prepareStatement(sql)) {
                 // Valores para criação da permissão
-                pstmPerm.setBoolean(1, admin.getPermissao().temPermissao(1));
-                pstmPerm.setBoolean(2, admin.getPermissao().temPermissao(2));
-                pstmPerm.setBoolean(3, admin.getPermissao().temPermissao(3));
-                pstmPerm.setBoolean(4, admin.getPermissao().temPermissao(4));
-                pstmPerm.setBoolean(5, admin.getPermissao().temPermissao(5));
+                pstmPerm.setBoolean(1, admin.getPermissoes().temPermissao(1));
+                pstmPerm.setBoolean(2, admin.getPermissoes().temPermissao(2));
+                pstmPerm.setBoolean(3, admin.getPermissoes().temPermissao(3));
+                pstmPerm.setBoolean(4, admin.getPermissoes().temPermissao(4));
+                pstmPerm.setBoolean(5, admin.getPermissoes().temPermissao(5));
 
                 ResultSet rset = pstmPerm.executeQuery();
                 while (rset.next()) {
@@ -136,7 +135,7 @@ public class AdministradorDAO {
         List<Administrador> listaAdministradores = new LinkedList<Administrador>();
         int i = 0;
 
-        try (Connection conn = conMan.conectar();) {
+        try (Connection conn = conMan.conectar()) {
             String sql = "SELECT * FROM Administrador WHERE ";
 
             // script sql recebe mais um set para busca a cada filtro fornecido

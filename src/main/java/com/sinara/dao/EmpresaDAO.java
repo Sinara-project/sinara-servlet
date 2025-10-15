@@ -222,7 +222,6 @@ public class EmpresaDAO {
         }
         return listaAdministradores;
     }
-
     public boolean deletarEmpresa(int id) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;
@@ -241,5 +240,4 @@ public class EmpresaDAO {
             return resultado;
         }
     }
-
 }
