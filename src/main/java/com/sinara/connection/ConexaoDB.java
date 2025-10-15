@@ -18,9 +18,10 @@ public class ConexaoDB {
         Connection con = null;
 
         try {
+            Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/" + database,
                     user, password);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

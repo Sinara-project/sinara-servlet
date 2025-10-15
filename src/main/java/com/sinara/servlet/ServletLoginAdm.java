@@ -1,7 +1,9 @@
 package com.sinara.servlet;
+import com.sinara.dao.AdministradorDAO;
+import com.sinara.model.Administrador;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +20,12 @@ public class ServletLoginAdm extends HttpServlet {
 
         // Se o email, ou password forem nulos, mandar uma mensagem de erro
         if (email == null || pass == null || pass.trim().isEmpty() || email.trim().isEmpty()) {
-            req.setAttribute("erro", "Erro: Dados necessários não foram preenchidos!");
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            try {
+                req.setAttribute("erro", "Dados necessários não foram preenchidos!");
+                req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
+            } catch (ServletException exc) {
+                exc.printStackTrace();
+            }
         } else {
             // Instanciar DAO de admin, criar um map para procurar pelo Usuário
             AdministradorDAO admindao = new AdministradorDAO();
@@ -32,24 +38,36 @@ public class ServletLoginAdm extends HttpServlet {
 
             // Procurar por todos os cookies, se algum for autorização com o email do usuário, o usuário tem cookie
             for (Cookie cookie : req.getCookies()) {
-                if (cookie.getAttribute("autorizado").equals(email)) temCookie = true;
+                if (cookie.getAttribute("autorizado")!=null) {
+                    if (cookie.getName().equals("autorizado") && cookie.getValue().equals(email)) {
+                        temCookie = true;
+                    }
+                }
             }
             // Se o usuário possui o cookie, manda-lo para home
             if (temCookie) {
-                resp.sendRedirect(req.getContextPath() + "/home");
+                resp.sendRedirect("/WEB-INF/home.jsp");
                 // Se existe algum usuário com essa senha e email, adicionar cookie ao usuário,
                 // e redimencionar para home
             } else if (!listaAdmin.isEmpty()) {
-                Cookie cookie = new Cookie("autorizado", email);
-                cookie.setHttpOnly(true);
-                cookie.setSecure(true);
-                cookie.setMaxAge(30 * 60);
-                resp.addCookie(cookie);
-                resp.sendRedirect(req.getContextPath() + "/home");
+                try {
+                    Cookie cookie = new Cookie("autorizado", email);
+                    cookie.setHttpOnly(true);
+                    cookie.setSecure(true);
+                    cookie.setMaxAge(30 * 60);
+                    resp.addCookie(cookie);
+                    req.getRequestDispatcher("/WEB-INF/home.jsp").forward(req, resp);
+                }  catch (ServletException exc) {
+                    exc.printStackTrace();
+                }
             } else {
-                // Se não encontrar, mandar mensagem de erro
-                req.setAttribute("erro", "Erro: Credenciais inválidas!");
-                req.getRequestDispatcher("/WEB-INF/login.jsp");
+                try {
+                    // Se não encontrar, mandar mensagem de erro
+                    req.setAttribute("erro", "Credenciais inválidas!");
+                    req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
+                } catch (ServletException exc) {
+                    exc.printStackTrace();
+                }
             }
         }
     }
