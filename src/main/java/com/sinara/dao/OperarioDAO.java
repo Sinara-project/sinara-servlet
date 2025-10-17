@@ -288,4 +288,33 @@ public class OperarioDAO {
     
     }
 
+    public List<Operario> listarOperarios() {
+        List<Operario> listaOperarios = new ArrayList<Operario>();
+        ConexaoDB conMan = new ConexaoDB();
+
+        String sql = "SELECT * FROM operario";
+
+        try (Connection conn = conMan.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rset = pstmt.executeQuery()) {
+
+            while (rset.next()) {
+                Operario operario = new Operario(
+                        rset.getString("cpf"),
+                        rset.getString("nome"),
+                        rset.getString("email_operario"),
+                        rset.getString("cargo_operario"),
+                        rset.getString("cnpj_empresa"),
+                        rset.getString("id_empresa")
+                );
+                operario.setId(rset.getInt("id"));
+                listaOperarios.add(operario);
+            }
+        } catch (SQLException exc) {
+            System.err.println(exc.getMessage());
+        }
+        return listaOperarios;
+    }
+    
+
 }
