@@ -164,7 +164,7 @@ public class EmpresaDAO {
         }
     }
 
-    public boolean alterarInicioPlano(int id, char tipoPlano) {
+    public boolean alterarPlano(int id, String tipoPlano) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;
 
@@ -173,7 +173,7 @@ public class EmpresaDAO {
             String sql = "UPDATE Empresa WHERE id = ? SET tipo_plano = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setInt(1, id);
-                pstm.setString(2, String.valueOf(tipoPlano));
+                pstm.setString(2, tipoPlano);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -183,6 +183,31 @@ public class EmpresaDAO {
             System.out.println(exc.getMessage());
             return resultado;
         }
+    }
+
+    public List<Empresa> listarEmpresas() {
+        ConexaoDB conMan = new ConexaoDB();
+        List<Empresa> listaAdministradores = new LinkedList<Empresa>();
+
+        try (Connection conn = conMan.conectar();) {
+            String sql = "SELECT * FROM Empresa";
+
+            try (Statement stm = conn.createStatement()) {
+                ResultSet rset = stm.executeQuery(sql);
+                while (rset.next()) {
+                    listaAdministradores.add(new Empresa(rset.getString("cnpj"),
+                            rset.getString("nome"), rset.getString("email_corporativo"),
+                            rset.getString("ramo_atuacao"), rset.getString("telefone"),
+                            rset.getBoolean("status_atividade"), rset.getDate("inicio_plano"),
+                            rset.getString("plano")));
+                    listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
+                }
+            }
+            conMan.desconectar(conn);
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+        return listaAdministradores;
     }
 
     public List<Empresa> buscarPorFiltro(Map<String, Object> campos) {
@@ -212,7 +237,7 @@ public class EmpresaDAO {
                             rset.getString("nome"), rset.getString("email_corporativo"),
                             rset.getString("ramo_atuacao"), rset.getString("telefone"),
                             rset.getBoolean("status_atividade"), rset.getDate("inicio_plano"),
-                            rset.getString("plano").charAt(0)));
+                            rset.getString("plano")));
                     listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
             }
@@ -222,6 +247,7 @@ public class EmpresaDAO {
         }
         return listaAdministradores;
     }
+
     public boolean deletarEmpresa(int id) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;

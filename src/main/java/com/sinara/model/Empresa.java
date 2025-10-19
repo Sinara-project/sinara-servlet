@@ -1,6 +1,5 @@
 package com.sinara.model;
 import java.sql.Date;
-import java.util.List;
 
 public class Empresa {
     private Integer id;
@@ -11,11 +10,11 @@ public class Empresa {
     private String telefone;
     private boolean status;
     private final Date inicioPlano;
-    private char plano;
+    private String plano;
 
     // Construtor
     public Empresa(String cnpj, String nome, String email, String ramo, String telefone, boolean status,
-                   Date inicioPlano, char plano) {
+                   Date inicioPlano, String plano) {
         this.id = null; this.cnpj = cnpj; this.nome = nome; this.email = email; this.ramo = ramo; this.telefone = telefone;
         this.status = status; this.inicioPlano = inicioPlano; this.plano = plano;
     }
@@ -47,7 +46,7 @@ public class Empresa {
     public Date getInicioPlano() {
         return this.inicioPlano;
     }
-    public int getPlano() {
+    public String getPlano() {
         return plano;
     }
 
@@ -73,7 +72,7 @@ public class Empresa {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    public void setPlano(char plano) {
+    public void setPlano(String plano) {
         this.plano = plano;
     }
 }
