@@ -55,7 +55,7 @@ public class Empresa {
         if (this.id == null) {
             this.id = id;
         }
-        throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
+        else throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
     }
     public void setNome(String nome) {
         this.nome = nome;

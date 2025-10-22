@@ -15,7 +15,7 @@ public class EmpresaDAO {
 
         try (Connection conn = conMan.conectar();) {
             String sql = "INSERT INTO Empresa (cnpj, nome, email_corporativo, telefone, ramo_atuacao, status_atividade, " +
-                    "incio_plano, tipo_plano) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    "inicio_plano, tipo_assinatura) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setString(1, empresa.getCnpj());
                 pstm.setString(2, empresa.getNome());
@@ -44,10 +44,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET nome = ?";
+            String sql = "UPDATE Empresa SET nome = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, nome);
+                pstm.setInt(2, id);
+                pstm.setString(1, nome);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -65,10 +65,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET email_corporativo = ?";
+            String sql = "UPDATE Empresa SET email_corporativo = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, email);
+                pstm.setInt(2, id);
+                pstm.setString(1, email);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -86,10 +86,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET telefone = ?";
+            String sql = "UPDATE Empresa SET telefone = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, telefone);
+                pstm.setInt(2, id);
+                pstm.setString(1, telefone);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -107,10 +107,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET ramo_atuacao = ?";
+            String sql = "UPDATE Empresa SET ramo_atuacao = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, ramo);
+                pstm.setInt(2, id);
+                pstm.setString(1, ramo);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -128,10 +128,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET status_atividade = ?";
+            String sql = "UPDATE Empresa SET status_atividade = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setBoolean(2, atividade);
+                pstm.setInt(2, id);
+                pstm.setBoolean(1, atividade);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -149,10 +149,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET incio_plano = ?";
+            String sql = "UPDATE Empresa SET incio_plano = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setDate(2, inicioPlano);
+                pstm.setInt(2, id);
+                pstm.setDate(1, inicioPlano);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -170,10 +170,10 @@ public class EmpresaDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Empresa WHERE id = ? SET tipo_plano = ?";
+            String sql = "UPDATE Empresa SET tipo_assinatura = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, tipoPlano);
+                pstm.setInt(2, id);
+                pstm.setString(1, tipoPlano);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -199,7 +199,7 @@ public class EmpresaDAO {
                             rset.getString("nome"), rset.getString("email_corporativo"),
                             rset.getString("ramo_atuacao"), rset.getString("telefone"),
                             rset.getBoolean("status_atividade"), rset.getDate("inicio_plano"),
-                            rset.getString("plano")));
+                            rset.getString("tipo_assinatura")));
                     listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
             }
@@ -237,7 +237,7 @@ public class EmpresaDAO {
                             rset.getString("nome"), rset.getString("email_corporativo"),
                             rset.getString("ramo_atuacao"), rset.getString("telefone"),
                             rset.getBoolean("status_atividade"), rset.getDate("inicio_plano"),
-                            rset.getString("plano")));
+                            rset.getString("tipo_assinatura")));
                     listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
             }
@@ -255,14 +255,14 @@ public class EmpresaDAO {
         try (Connection conn = conMan.conectar();) {
             String sql = "DELETE FROM Empresa WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
+                pstm.setInt(2, id);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
                 return resultado;
             }
         } catch (SQLException exc) {
-            System.out.println(exc.getMessage());
+                    System.out.println(exc.getMessage());
             return resultado;
         }
     }
