@@ -53,7 +53,7 @@ public class EmpresaDAO {
         List<Empresa> listaAdministradores = new LinkedList<Empresa>();
 
         try (Connection conn = conMan.conectar()) {
-            String sql = "SELECT * FROM Empresa";
+            String sql = "SELECT * FROM Empresa ORDER BY nome";
 
             try (Statement stm = conn.createStatement()) {
                 // Adicionar novo objeto de Empresa na lista a cada linha do rset

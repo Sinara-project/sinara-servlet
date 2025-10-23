@@ -30,23 +30,25 @@
     <title>Edição - <%=empresa.getNome()%></title>
 </head>
 <body>
-    <% // Apresentar mensagens de erro ou sucesso
-        if (erros!=null) for (String erro : erros) {
-    %>
-            <p style="color: red">* <%=erro%></p>
-    <%
-        }
-    %>
-    <%
-        if (mensagem!=null) {
-    %>
-            <p><%=mensagem%></p>
-    <%
-        }
-        request.removeAttribute("mensagem");
-        request.removeAttribute("erro");
-        Empresa.nulo = false;
-    %>
+    <div id="mensagens">
+        <% // Apresentar mensagens de erro ou sucesso
+            if (erros!=null) for (String erro : erros) {
+        %>
+        <p style="color: red">* <%=erro%></p>
+        <%
+                }
+        %>
+        <%
+            if (mensagem!=null) {
+        %>
+        <p><%=mensagem%></p>
+        <%
+            }
+            request.removeAttribute("mensagem");
+            request.removeAttribute("erro");
+            Empresa.nulo = false;
+        %>
+    </div>
     <form action="empresas?action=atualizar&id=<%=empresa.getId()%>" method="post">
         <label for="id">
             ID:
@@ -76,20 +78,6 @@
         <label for="status">
             Status:
             <input id="status" name="status" type="checkbox" <%=status%>>
-        </label>
-        <br>
-        <label for="inicioPlano">
-            Início do plano:
-            <input id="inicioPlano" name="inicioPlano" type="date" value="<%=empresa.getInicioPlano()%>">
-        </label>
-        <br>
-        <label for="plano">
-            Plano:
-            <select name="plano" id="plano" required>
-                <option value="ANUAL" <%=selecionado("ANUAL", empresa)%>>Anual</option>
-                <option value="MENSAL" <%=selecionado("MENSAL", empresa)%>>Mensal</option>
-                <option value="GRÁTIS" <%=selecionado("GRÁTIS", empresa)%>>Grátis</option>
-            </select>
         </label>
         <br>
         <input type="submit" value="Enviar">

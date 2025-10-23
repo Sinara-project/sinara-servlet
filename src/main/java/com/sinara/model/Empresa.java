@@ -208,8 +208,8 @@ public class Empresa {
         return 1;
     }
     public int setStatus(String statusStr) {
-        boolean status = statusStr.equals("on");
         try {
+            boolean status = statusStr.equals("on");
             if (this.status != status) this.status = status;
             else return 0;
         } catch (IllegalArgumentException exc) {

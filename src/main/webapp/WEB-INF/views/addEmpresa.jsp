@@ -36,7 +36,7 @@
     <title>Adicionar Empresa</title>
 </head>
 <body>
-    <div id="Mensagens">
+    <div id="mensagens">
         <% // Apresentar mensagens de erro ou sucesso
             if (erros!=null) for (String erro : erros) {
         %>

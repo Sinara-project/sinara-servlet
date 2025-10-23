@@ -21,43 +21,45 @@
 %>
 
 <body>
+    <div id="mensagens">
         <% if (erros!=null) for (String erro : erros) {
         %>
-            <p style="color: red">* <%=erro%></p>
+        <p style="color: red">* <%=erro%></p>
         <%
-            }
+                }
         %>
         <% if (mensagem!=null) {
         %>
-            <p><%=mensagem%></p>
+        <p><%=mensagem%></p>
         <%
             }
             request.removeAttribute("mensagem");
             request.removeAttribute("erro");
             Empresa.nulo = false;
         %>
-        <a href="empresas?action=add">
-            Adicionar Empresa
-        </a>
-        <table border="1px">
-        <tr>
-            <th></th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Ramo</th>
-            <th>Atividade</th>
-            <th>Início do Plano</th>
-            <th>Tipo de assinatura</th>
-            <th>Editar</th>
-            <th>Excluir</th>
-        </tr>
-        <%
-            int cont = 1;
-            for (Empresa empresa : empresas) {
-                if (empresa.isStatus()) status = "Ativo";
-                else status = "Inativo";
-        %>
+    </div>
+    <a href="empresas?action=add">
+        Adicionar Empresa
+    </a>
+    <table border="1px">
+    <tr>
+        <th></th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Ramo</th>
+        <th>Atividade</th>
+        <th>Início do Plano</th>
+        <th>Tipo de assinatura</th>
+        <th>Editar</th>
+        <th>Excluir</th>
+    </tr>
+    <%
+        int cont = 1;
+        for (Empresa empresa : empresas) {
+            if (empresa.isStatus()) status = "Ativo";
+            else status = "Inativo";
+    %>
         <tr>
             <td><%=cont++%></td>
             <td><%=empresa.getNome()%></td>
@@ -67,12 +69,12 @@
             <td><%=status%></td>
             <td><%=empresa.getInicioPlano()%></td>
             <td><%=empresa.getPlano()%></td>
-            <td><a href="empresas?action=editar&id=<%=empresa.getId()%>" target="_blank">Editar</a></td>
+            <td><a href="empresas?action=editar&id=<%=empresa.getId()%>">Editar</a></td>
             <td><a href="empresas?action=excluir&id=11">Excluir</a></td>
         </tr>
-        <%
-            }
-        %>
+    <%
+        }
+    %>
     </table>
 </body>
 </html>
