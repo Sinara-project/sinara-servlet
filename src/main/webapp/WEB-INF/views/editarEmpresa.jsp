@@ -1,5 +1,6 @@
 <%@ page import="com.sinara.model.Empresa" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
   User: viniciusboas-ieg
   Date: 20/10/2025
@@ -21,17 +22,18 @@
     // Declarar checked no HTML caso status da empresa seja ativo
     String status;
     if (empresa.isStatus()) status = "checked";
+
     else status = "";
 %>
 <html>
 <head>
-    <title>Edição - <%=empresa.getNome()%>></title>
+    <title>Edição - <%=empresa.getNome()%></title>
 </head>
 <body>
     <% // Apresentar mensagens de erro ou sucesso
         if (erros!=null) for (String erro : erros) {
     %>
-            <p style="color: red"><%=erro%></p>
+            <p style="color: red">* <%=erro%></p>
     <%
         }
     %>
@@ -41,6 +43,9 @@
             <p><%=mensagem%></p>
     <%
         }
+        request.removeAttribute("mensagem");
+        request.removeAttribute("erro");
+        Empresa.nulo = false;
     %>
     <form action="empresas?action=atualizar&id=<%=empresa.getId()%>" method="post">
         <label for="id">

@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.sinara.model.Empresa" %><%--
+<%@ page import="com.sinara.model.Empresa" %>
+<%--
   Created by IntelliJ IDEA.
   User: viniciusboas-ieg
   Date: 20/10/2025
@@ -22,7 +23,7 @@
 <body>
         <% if (erros!=null) for (String erro : erros) {
         %>
-            <p style="color: red"><%=erro%></p>
+            <p style="color: red">* <%=erro%></p>
         <%
             }
         %>
@@ -30,7 +31,10 @@
         %>
             <p><%=mensagem%></p>
         <%
-                }
+            }
+            request.removeAttribute("mensagem");
+            request.removeAttribute("erro");
+            Empresa.nulo = false;
         %>
         <a href="empresas?action=add">
             Adicionar Empresa
