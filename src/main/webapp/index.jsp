@@ -12,5 +12,7 @@
 </head>
 <body>
 <a href="empresas"><h1>Empresas</h1></a>
+
+<a href="empresas?action=visaoGeral"><h1>Visão Geral</h1></a>
 </body>
 </html>

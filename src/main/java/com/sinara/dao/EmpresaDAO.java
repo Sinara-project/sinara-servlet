@@ -1,9 +1,6 @@
 package com.sinara.dao;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.sinara.connection.ConexaoDB;
 import com.sinara.model.*;
@@ -72,6 +69,28 @@ public class EmpresaDAO {
             System.out.println(exc.getMessage());
         }
         return listaAdministradores;
+    }
+    public List<VisaoGeral> listarVisoes() {
+        // Criar conexão com BD, e lista que será retornada
+        ConexaoDB conMan = new ConexaoDB();
+        List<VisaoGeral> listaVisoes = new LinkedList<>();
+        List<String> erros =  new LinkedList<>();
+
+        try (Connection conn = conMan.conectar()) {
+            String sql = "SELECT * FROM visao_geral ORDER BY nome";
+
+            try (Statement stm = conn.createStatement()) {
+                // Adicionar novo objeto de Empresa na lista a cada linha do rset
+                ResultSet rset = stm.executeQuery(sql);
+                while (rset.next()) {
+                    listaVisoes.add(new VisaoGeral(rset, erros));
+                }
+            }
+            conMan.desconectar(conn);
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+        return listaVisoes;
     }
 
     // Método para busca de empresas

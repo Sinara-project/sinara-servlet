@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.sinara.dao.EmpresaDAO;
 import com.sinara.model.Empresa;
+import com.sinara.model.VisaoGeral;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,6 +24,9 @@ public class EmpresaServlet extends HttpServlet {
         if (action==null) {
             listarEmpresas(req, resp);
         } else switch (action) {
+            case "visaoGeral" -> {
+                visaoGeral(req, resp);
+            }
             case "editar" -> {
                 editarEmpresa(req, resp);
             }
@@ -58,6 +62,11 @@ public class EmpresaServlet extends HttpServlet {
         List<Empresa> empresas = empDao.listarEmpresas();
         req.setAttribute("empresas", empresas);
         req.getRequestDispatcher("/WEB-INF/views/empresasAnalise.jsp").forward(req, resp);
+    }
+    public void visaoGeral(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<VisaoGeral> listaVisoes = empDao.listarVisoes();
+        req.setAttribute("empresas", listaVisoes);
+        req.getRequestDispatcher("/WEB-INF/views/visaoGeral.jsp").forward(req, resp);
     }
 
     public void editarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
