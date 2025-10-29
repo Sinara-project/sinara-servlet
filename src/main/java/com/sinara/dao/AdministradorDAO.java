@@ -30,7 +30,7 @@ public class AdministradorDAO {
             if (rset.next()) {
                 id = rset.getInt(1);
             }
-            sql = "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissoes) VALUES (?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissoes, id_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmAdm = conn.prepareStatement(sql);
             pstmAdm.setString(1, admin.getCpf());
             pstmAdm.setString(2, admin.getNome());
@@ -38,6 +38,7 @@ public class AdministradorDAO {
             pstmAdm.setString(4, admin.getCargo());
             pstmAdm.setString(5, admin.getSenha());
             pstmAdm.setInt(6, id);
+            pstmAdm.setInt(7, admin.getidEmpresa());
             resultado = pstmAdm.executeUpdate() > 0;
         return resultado;
     }
@@ -49,7 +50,7 @@ public class AdministradorDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Administrador SET token = ? WHERE id = ? ";
+            String sql = "UPDATE Administrador SET token_administracao = ? WHERE id = ? ";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setInt(2, id);
                 pstm.setString(1, uuid);
@@ -173,7 +174,7 @@ public class AdministradorDAO {
                     listaAdministradores.add(new Administrador(rset.getString("nome"),
                             rset.getString("email_admin"), rset.getString("senha"),
                             rset.getString("cpf"), rset.getString("cargo"),
-                            rset.getString("id_empresa")));
+                            rset.getInt("id_empresa")));
                     listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
             }
@@ -210,7 +211,7 @@ public class AdministradorDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Administrador SET token = '' WHERE id = ? ";
+            String sql = "UPDATE Administrador SET token_administracao = '' WHERE id = ? ";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setInt(1, id);
 

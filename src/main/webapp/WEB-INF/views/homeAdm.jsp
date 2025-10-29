@@ -12,6 +12,9 @@
 </head>
 <body>
     <h1>Home do aplicativo | Administração</h1>
-    <p>Bem vindo, <%=request.getAttribute("nome")%></p>
+    <p>Bem vindo, <%=request.getSession().getAttribute("user")%></p>
+    <form action="home?action=logout" method="post">
+        <input type="submit" value="LogOut">
+    </form>
 </body>
 </html>

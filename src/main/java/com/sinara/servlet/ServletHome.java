@@ -49,9 +49,10 @@ public class ServletHome extends HttpServlet {
     private void cadastrarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             AdministradorDAO admDao = new AdministradorDAO();
+            String idEmpresa = req.getParameter("cnpjEmpresa");
             Administrador adm = new Administrador(req.getParameter("nome"), req.getParameter("email"),
                     req.getParameter("senha"), req.getParameter("cpf"), req.getParameter("cargo"),
-                    req.getParameter("cnpjEmpresa"));
+                    Integer.parseInt(idEmpresa));
             admDao.inserirAdministrador(adm);
             HttpSession session = req.getSession();
             addLogin(resp, adm, session);
@@ -89,12 +90,19 @@ public class ServletHome extends HttpServlet {
         }
     }
     public void logOut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Cookie[] cookies = req.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("auth")) {
+                cookie.setValue("");
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                resp.addCookie(cookie);
+            }
+        }
         req.getSession(false).invalidate();
-        Cookie cookie = new Cookie("auth", "");
-        cookie.setMaxAge(0);
-        resp.addCookie(cookie);
         resp.sendRedirect(req.getContextPath()+"/home");
     }
+
     private void addLogin(HttpServletResponse resp, Administrador adm, HttpSession session) throws NullPointerException, IllegalArgumentException {
         AdministradorDAO admDao = new AdministradorDAO();
         String token = UUID.randomUUID().toString();
@@ -102,7 +110,7 @@ public class ServletHome extends HttpServlet {
         cookie.setMaxAge(60*60*24*30); // Definido em segundos
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        //admDao.inserirUUID(adm.getId(), token);
+        admDao.inserirUUID(adm.getId(), token);
         resp.addCookie(cookie);
         session.setAttribute("user", adm.getNome());
     }
@@ -114,6 +122,15 @@ public class ServletHome extends HttpServlet {
         filtros.put("senha", senha);
         return (admDao.buscarPorFiltro(filtros).get(0));
     }
+
+    private Administrador buscarAdmin(String email, String senha, String campo) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException {
+        if (email.isBlank() || senha.isBlank()) throw new NullPointerException();
+        AdministradorDAO admDao = new AdministradorDAO();
+        Map<String, Object> filtros = new HashMap<>();
+        filtros.put("email_admin", email);
+        filtros.put(campo, senha);
+        return (admDao.buscarPorFiltro(filtros).get(0));
+    }
     private boolean ehLogado(HttpServletRequest req) throws NullPointerException, IllegalArgumentException, ServletException, IOException {
         // Procurar por todos os cookies, se algum for autorização com o email do usuário, o usuário tem cookie
         try {
@@ -123,8 +140,8 @@ public class ServletHome extends HttpServlet {
                 if (cookie.getName().equals("auth")) {
                     String[] credenciais = cookie.getValue().split(":");
                     String email = credenciais[0];
-                    String senha = credenciais[1];
-                    return buscarAdmin(email, senha) != null;
+                    String token = credenciais[1];
+                    return buscarAdmin(email, token, "token_administracao") != null;
                 }
             }
         } catch (IndexOutOfBoundsException exc) {

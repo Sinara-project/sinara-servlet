@@ -53,7 +53,7 @@
             Empresa:
             <select name="cnpjEmpresa" id="cnpjEmpresa">
                 <%for (Empresa empresa : empresas) {%>
-                <option value="<%=empresa.getNome()%>>"><%=empresa.getNome()%></option>
+                <option value="<%=empresa.getId()%>"><%=empresa.getNome()%></option>
                 <%
                 }
                 %>
