@@ -70,20 +70,25 @@ public class EmpresaServlet extends HttpServlet {
     }
 
     public void editarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Map<String, Object> filtro = new HashMap<>();
-        filtro.put("id", id);
         List<String> erro = new LinkedList<>();
-        List<Empresa> empresa = empDao.buscarPorFiltro(filtro);
-        if (!empresa.isEmpty()) {
-            Empresa emp = empresa.get(0);
-            req.setAttribute("empresa", emp);
-            req.getRequestDispatcher("/WEB-INF/views/editarEmpresa.jsp").forward(req, resp);
-        } else {
-            erro.add("A Empresa não foi encontrada!");
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            Map<String, Object> filtro = new HashMap<>();
+            filtro.put("id", id);
+            List<Empresa> empresa = empDao.buscarPorFiltro(filtro);
+            if (!empresa.isEmpty()) {
+                Empresa emp = empresa.get(0);
+                req.setAttribute("empresa", emp);
+                req.getRequestDispatcher("/WEB-INF/views/editarEmpresa.jsp").forward(req, resp);
+            } else {
+                erro.add("A Empresa não foi encontrada!");
+                req.setAttribute("erro", erro);
+            }
+        } catch (IllegalArgumentException exc) {
             req.setAttribute("erro", erro);
+            erro.add("ID não corresponde à um número");
         }
-        req.getRequestDispatcher("/empresas").forward(req, resp);
+        req.getRequestDispatcher("/empresas?action=listar").forward(req, resp);
     }
 
     public void excluirEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
