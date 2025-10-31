@@ -1,0 +1,10 @@
+body {
+    display: flex;
+    justify-content: left;
+    width: --tamanho-tela;
+}
+
+main {
+    padding: 0 50px;
+    flex: 1;
+}

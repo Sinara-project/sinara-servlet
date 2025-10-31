@@ -1,0 +1,36 @@
+  .container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  max-width: 320px;
+  border: 4px solid #ff7043;
+}
+strong {
+  color: #1a4fa3;
+}
+.code-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+.code {
+  width: 45px;
+  height: 50px;
+  text-align: center;
+  font-size: 22px;
+  border: 2px solid #002c68; 
+  border-radius: 6px; 
+  background-color: #fff;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  color: #002c68;
+  font-weight: 600;
+}
+
+.code:focus {
+  border-color: #ff7043; 
+  box-shadow: 0 0 5px rgba(255, 112, 67, 0.5);
+}

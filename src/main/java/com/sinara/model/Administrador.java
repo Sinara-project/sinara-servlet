@@ -63,5 +63,5 @@ public class Administrador {
     public String getSenha() {
         return senha;
     }
-    
+
 }

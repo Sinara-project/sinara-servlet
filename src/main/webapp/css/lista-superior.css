@@ -1,0 +1,56 @@
+#lista-superior{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 0 2rem;
+}
+.icones-superior{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    
+}
+
+.icones-superior img {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+#barra-pesquisa label {
+    display: flex;
+    align-items: center;
+    background-color: #E5EEF4;
+    border-radius: 10px;
+    padding: 0.3rem 1rem;
+    gap: 0.8rem;
+    width: 30rem;
+    border: 1px solid var(--cor-borda);
+}
+#barra-pesquisa img {
+    width: 45px;
+    height: 45px;
+    opacity: 0.7;
+}
+
+#barra-pesquisa input {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1rem;
+    color: var(--fonte-azul);
+    width: 30rem;;
+}
+#perfil {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--fonte-azul);
+}
+#perfil #foto {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: url(/img/ygona.svg);
+    background-size: cover;
+}

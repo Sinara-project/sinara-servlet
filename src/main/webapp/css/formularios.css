@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+iframe {
+    width: 65vw;
+    height: 70vh;
+}
+#analise button {
+    color: #FF7655;
+}
