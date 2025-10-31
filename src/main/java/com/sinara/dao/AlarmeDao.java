@@ -23,7 +23,7 @@ public class AlarmeDao {
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(
-                    "INSERT INTO ALARME (id_impresa, gerado_em, descricao, status_alerta) VALUES(? ? ? ?)");
+                    "INSERT INTO ALARME (id_empresa, gerado_em, descricao, status_alerta) VALUES(?, ?, ?, ?)");
             pstmt.setInt(1, alarme.getIdEmpresa());
             pstmt.setTimestamp(2, Timestamp.valueOf(alarme.getGeradoEm())); // ou talvez nem precise dessa conversão pq
                                                                             // é gerado na hora que o alerta é criado
