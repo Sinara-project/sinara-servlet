@@ -1,6 +1,9 @@
 package com.sinara.dao;
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import com.sinara.connection.ConexaoDB;
 import com.sinara.model.*;
