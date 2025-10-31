@@ -40,7 +40,7 @@ public class OperarioDAO {
             }
 
 
-            pstmt = conn.prepareStatement("INSERT INTO operario (cpf, nome, horario_trabalho, email_operario, cargo_operario, id_empresa, id_permissoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO operario (cpf, nome, horario_trabalho, email_operario, cargo_operario, id_empresa, id_permissoes, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, operario.getCpf());
             pstmt.setString(2, operario.getNome());
             pstmt.setTime(3, operario.getHorarioTrabalho());
@@ -48,6 +48,7 @@ public class OperarioDAO {
             pstmt.setString(5, operario.getCargo());
             pstmt.setInt(6, operario.getIdEmpresa());
             pstmt.setInt(7, idPermissao);
+            pstmt.setString(8, operario.getSenha());
 
 
             resultado = pstmt.executeUpdate() > 0;

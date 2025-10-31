@@ -4,7 +4,7 @@ import java.sql.Time;
 
 public class Operario {
     private Integer id;
-    private final String cpf;
+    private String cpf;
     private String nome;
     private String email;
     private String cargo;
@@ -47,9 +47,17 @@ public class Operario {
     }
 
 
-
-
-
+    public Operario(String cpf, String nome, String email, String cargo, String senha, int idEmpresa, Time horarioTrabalho) {
+        this.id = null;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.cargo = cargo;
+        this.senha = senha;
+        this.idEmpresa = idEmpresa;
+        this.permissoes = new Permissoes();
+        this.horarioTrabalho = horarioTrabalho;
+    }
 
     //Getters
     public Integer getId() {
@@ -79,6 +87,16 @@ public class Operario {
             throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
         }
     }
+
+    public void setCpf(String cpf) {
+        if (this.cpf == null) {
+            this.cpf = cpf;
+        } else {
+            throw new IllegalStateException("ERRO: O Cpf já foi definido e não pode mais ser alterado!");
+        }
+    }
+
+
     public void setNome(String nome) {
         this.nome = nome;
     }

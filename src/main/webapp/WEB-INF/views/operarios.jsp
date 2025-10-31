@@ -5,6 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    List<String> erros = (List<String>) session.getAttribute("erros");
     String message = (String) session.getAttribute("message");
     if (message != null) {
         session.removeAttribute("message");
@@ -31,6 +32,17 @@
     String classe = message.toLowerCase().contains("sucesso") ? "success" : "error"; %>
 <div class="<%= classe %>"><%= message %></div>
 <% } %>
+
+<%
+    if (erros != null && !erros.isEmpty()) {
+        for (String erro : erros) {
+%>
+<h1 style="background-color: red"><%= erro %></h1>
+<%
+        }
+        session.removeAttribute("erros");
+    }
+%>
 
 <button onclick="window.location='operarios?action=adicionar'">Adicionar Operário</button>
 
@@ -71,7 +83,12 @@
         <td><%= idParaNome != null ? idParaNome.get(operario.getIdEmpresa()) : "" %></td>
         <td>
             <button onclick="window.location='operarios?action=editar&id=<%= operario.getId() %>'">Editar</button>
-            <button type="button" onclick="confirmarExclusao(<%= operario.getId() %>)">Excluir</button>
+
+            <!-- Formulário direto de exclusão -->
+            <form method="post" action="operarios?action=excluir" style="display:inline;">
+                <input type="hidden" name="id" value="<%= operario.getId() %>">
+                <button type="submit">Excluir</button>
+            </form>
         </td>
     </tr>
     <%
@@ -83,10 +100,6 @@
     </tr>
     <% } %>
 </table>
-
-<form id="formExcluir" method="post" action="operarios?action=excluir" style="display:none;">
-    <input type="hidden" name="id" id="idExcluir" value="">
-</form>
 
 <script>
     const tabela = document.getElementById("tabelaOperarios");
@@ -110,15 +123,6 @@
 
     inputValor.addEventListener("keyup", filtrar);
     selectCampo.addEventListener("change", filtrar);
-
-    function confirmarExclusao(id) {
-        if (confirm("Tem certeza que deseja excluir o operário com ID " + id + "?")) {
-            document.getElementById("idExcluir").value = id;
-            document.getElementById("formExcluir").submit();
-        } else {
-            alert("Exclusão cancelada.");
-        }
-    }
 </script>
 </body>
 </html>
