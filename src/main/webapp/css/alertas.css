@@ -1,0 +1,59 @@
+#titulo-alertas{
+    color: var(--fonte-azul);
+    text-align: center;
+    margin-bottom: 5vh;
+}
+
+#container-alertas {
+    background-color: #fff;
+    border-radius: 20px;
+    border: 2px solid #BFD4E3;
+    box-shadow: 0 6px 15px rgba(191, 212, 227, 0.51);
+    padding: 2rem;
+    width: 750px;
+    transition: 0.3s ease;
+    margin: 0 auto;          
+    display: flex;
+    flex-direction: column;
+    align-items: center;      
+    justify-content: center;   
+}
+  
+#informacoes-alertas {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+  
+.container-alerta {
+    flex: 1;
+    background-color: #eef2ff;
+    border-radius: 15px;
+    padding: 1.2rem;
+    color: #0b1b47;
+    font-size: 0.9rem;
+}
+  
+#container-geral{
+    display: flex;
+    height: 53vh;
+    gap: 30px;
+    margin-bottom: 2rem;
+}
+
+.container-alerta h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #384994;
+}
+
+.container-alerta p{
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: #384994;
+    font-weight: 500;
+}
+
+#alertas button {
+    color: #FF7655;
+}

@@ -1,0 +1,48 @@
+#titulo-analise{
+    color: var(--fonte-azul);
+    text-align: center;
+    margin-bottom: 5vh;
+}
+
+#container-relatorios {
+    background-color: #fff;
+    border-radius: 20px;
+    border: 2px solid #BFD4E3;
+    box-shadow: 0 6px 15px rgba(191, 212, 227, 0.51);
+    padding: 2rem;
+    width: 53.5rem;
+    height: 62vh;
+    transition: 0.3s ease;
+    display: flex;
+    gap: 4rem;
+    align-items: center;      
+    justify-content: center;  
+    margin: 0 auto;
+}
+#container-relatorios img{
+    width: 23rem;
+    object-fit: cover;
+}
+.bloco-formulario{
+    background-color: #E8EDFF;
+    width: 22rem;
+    border-radius: 10px;
+    padding: 1.3rem;
+}
+.relatorios-dashboards{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+.titulo-formulario{
+    color: var(--azul-sinara07);
+    font-size: 1.3rem;
+}
+.descricao-formulario{
+    color: var(--azul-sinara07);
+    font-weight: 500;
+}
+
+#analise button {
+    color: #FF7655;
+}

@@ -1,0 +1,60 @@
+/* Fonte importada */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+    
+    /* Paleta de cores */
+
+    --laranja-sinara:#FF7655; 
+    --salmao-sinara:#FFC1B2; 
+    --azul-sinara07:#384994; 
+    --azul-claro-gradient:#4082A7;
+    --fonte-azul:#0B1854;
+    --branco:#fff;
+    --corna: bolder;
+    --laranja-hover:#D3422C;
+    --cor-borda:#BFC7E8;
+
+    /* Tamanhos de fonte */
+
+    --titulos-secoes: 2.3rem;
+    --descricoes: 1.8rem;
+
+    /* Max width da tela*/
+
+    --tamanho-tela: 1400px;
+}
+
+*{
+    font-family: "Montserrat", sans-serif;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+a{
+    text-decoration: none;
+}
+
+.setas{
+    background-color: transparent;
+    border: 2px solid var(--laranja-sinara);
+    color: var(--laranja-sinara);
+    font-size: 1.2rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+    margin: 0 auto;
+
+}
+
+.setas:hover {
+    background-color: var(--laranja-sinara);
+    color: white;
+}
