@@ -52,7 +52,7 @@ public class Administrador {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
-    public int getidEmpresa() {
+    public int getIdEmpresa() {
         return idEmpresa;
     }
     public String getCpf() {
