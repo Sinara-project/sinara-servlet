@@ -1,7 +1,10 @@
 package com.sinara.dao;
 import com.sinara.connection.ConexaoDB;
 import com.sinara.model.Administrador;
+import com.sinara.model.Permissoes;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -38,11 +41,10 @@ public class AdministradorDAO {
         pstmAdm.setString(4, admin.getCargo());
         pstmAdm.setString(5, admin.getSenha());
         pstmAdm.setInt(6, id);
-        pstmAdm.setInt(7, admin.getidEmpresa());
+        pstmAdm.setInt(7, admin.getIdEmpresa());
         resultado = pstmAdm.executeUpdate() > 0;
         return resultado;
-    }
-    // Alterações
+    }    // Alterações
 
     public boolean inserirUUID(int id, String uuid) {
         ConexaoDB conMan = new ConexaoDB();
@@ -69,11 +71,12 @@ public class AdministradorDAO {
         boolean resultado = false;
 
 
-        try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Administrador SET nome = ? WHERE id = ? ";
+        try (Connection conn = conMan.conectar()) {
+            String sql = "UPDATE Administrador SET nome = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(2, id);
                 pstm.setString(1, nome);
+                pstm.setInt(2, id);
+
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -90,11 +93,11 @@ public class AdministradorDAO {
         boolean resultado = false;
 
 
-        try (Connection conn = conMan.conectar();) {
+        try (Connection conn = conMan.conectar()) {
             String sql = "UPDATE Administrador SET email_admin = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(2, id);
                 pstm.setString(1, email);
+                pstm.setInt(2, id);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -112,10 +115,11 @@ public class AdministradorDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Administrador SET cargo = ? WHERE id = ?";
+            String sql = "UPDATE Administrador set cargo = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(2, id);
                 pstm.setString(1, cargo);
+                pstm.setInt(2, id);
+
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -185,16 +189,49 @@ public class AdministradorDAO {
         return listaAdministradores;
     }
 
+
+    public List<Administrador> listarAdministradores() {
+        ConexaoDB conexaoDB = new ConexaoDB();
+        List<Administrador> administradores = new ArrayList<>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection conn = null;
+        try {
+            conn = conexaoDB.conectar();
+            pstmt = conn.prepareStatement("SELECT *  FROM Administrador");
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Administrador admin = new Administrador(
+                        rs.getString("nome"),
+                        rs.getString("email_admin"),
+                        rs.getString("senha"),
+                        rs.getString("cpf"),
+                        rs.getString("cargo"),
+                        rs.getInt("id_empresa")
+                );
+                admin.setId(rs.getInt("id"));
+                administradores.add(admin);
+            }
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+        return administradores;
+    }
+
+
+
+
     public boolean deletarAdministrador(int idPerm, int id) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "DELETE FROM Permissoes WHERE id = ?; " +
-                    "DELETE FROM Administrador WHERE id = ?";
+            String sql = "DELETE FROM Administrador WHERE id = ?; " +
+                    "DELETE FROM Permissoes WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, idPerm);
-                pstm.setInt(2, id);
+                pstm.setInt(1, id);
+                pstm.setInt(2, idPerm);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
