@@ -79,8 +79,9 @@ public class Permissoes {
     public void setId(int id) {
         if (this.id == null) {
             this.id = id;
+        } else {
+            throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
         }
-        throw new IllegalStateException("ERRO: O ID já foi definido e não pode mais ser alterado!");
     }
     public void setPermissao(int atributo, boolean mudanca) {
         switch (atributo) {
