@@ -195,9 +195,9 @@ public class Empresa {
     }
     public int setRamo(String ramo) {
         try {
-            if (ramo==null || ramo.isBlank()) return -1;
-            else if (!this.ramo.equals(ramo)) this.ramo = ramo;
-            else return 0;
+        if (ramo==null || ramo.isBlank()) return -1;
+        else if (!this.ramo.equals(ramo)) this.ramo = ramo;
+        else return 0;
         } catch (IllegalArgumentException exc) {
             exc.printStackTrace();
             return 3;

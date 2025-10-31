@@ -1,5 +1,4 @@
 package com.sinara.model;
-import java.util.List;
 
 public class Administrador {
     private Integer id;

@@ -73,6 +73,28 @@ public class EmpresaDAO {
         }
         return listaAdministradores;
     }
+    public List<VisaoGeral> listarVisoes() {
+        // Criar conexão com BD, e lista que será retornada
+        ConexaoDB conMan = new ConexaoDB();
+        List<VisaoGeral> listaVisoes = new LinkedList<>();
+        List<String> erros =  new LinkedList<>();
+
+        try (Connection conn = conMan.conectar()) {
+            String sql = "SELECT * FROM visao_geral ORDER BY nome";
+
+            try (Statement stm = conn.createStatement()) {
+                // Adicionar novo objeto de Empresa na lista a cada linha do rset
+                ResultSet rset = stm.executeQuery(sql);
+                while (rset.next()) {
+                    listaVisoes.add(new VisaoGeral(rset, erros));
+                }
+            }
+            conMan.desconectar(conn);
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+        return listaVisoes;
+    }
 
     // Método para busca de empresas
     public List<Empresa> buscarPorFiltro(Map<String, Object> campos) {
@@ -96,11 +118,11 @@ public class EmpresaDAO {
             // Criar PreparedStatement pstm
             try (PreparedStatement pstm = conn.prepareStatement(sql.toString())) {
                 cont = 1;
-                // setar valores no pstm de acordo com filtros fornecidos
+                // setar valores no pstm de acordo com filtros fornecidos 
                 for (Object s : campos.values()) {
                     pstm.setObject(cont++, s);
                 }
-
+                
                 // Executar query e adicionar Empresa a cada linha do rset na lista
                 ResultSet rset = pstm.executeQuery();
                 while (rset.next()) {
