@@ -20,12 +20,12 @@ public class OperarioDAO {
         Connection conn = null;
         PreparedStatement pstmt = null; // PreparedStatement de inserção de usuário
         PreparedStatement permstmt = null; // PreparedStatement de permissões
-        boolean resultado = false;  
+        boolean resultado = false;
         ResultSet rs = null;
         Integer idPermissao = 0;
         try {
             conn = conexao.conectar(); // INSERT INTO operario (cpf, nome, email, cargo, cnpj_empresa) VALUES (?, ?, ?,
-                                       // ?, ?)"
+            // ?, ?)"
             permstmt = conn.prepareStatement("INSERT INTO Permissoes (inserir_dados, editar_dados, visualizar_relatorios, aprovar_registros, gerenciar_usuarios) VALUES (?, ?, ?, ?, ?) RETURNING id");
             permstmt.setBoolean(1, operario.getPermissoes().temPermissao(1));
             permstmt.setBoolean(2, operario.getPermissoes().temPermissao(2));
@@ -40,15 +40,16 @@ public class OperarioDAO {
             }
 
 
-            pstmt = conn.prepareStatement("INSERT INTO operario (cpf, nome, horario_trabalho, email_operario, cargo_operario, id_empresa, id_permissoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO operario (cpf, nome, horario_trabalho, email_operario, cargo_operario, id_empresa, id_permissoes, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, operario.getCpf());
             pstmt.setString(2, operario.getNome());
-            pstmt.setString(3, operario.getHorarioTrabalho());
+            pstmt.setTime(3, operario.getHorarioTrabalho());
             pstmt.setString(4, operario.getEmail());
             pstmt.setString(5, operario.getCargo());
-            pstmt.setString(6, operario.getCnpjEmpresa());
+            pstmt.setInt(6, operario.getIdEmpresa());
             pstmt.setInt(7, idPermissao);
-            
+            pstmt.setString(8, operario.getSenha());
+
 
             resultado = pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -72,7 +73,7 @@ public class OperarioDAO {
                 e.printStackTrace();
             }
         }
-        return resultado; 
+        return resultado;
     }
 
     public boolean alterarNome(int id, String novoNome) {
@@ -112,7 +113,7 @@ public class OperarioDAO {
         boolean resultado = false;
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement("UPDATE operario SET email = ? WHERE id = ?");
+            pstmt = conn.prepareStatement("UPDATE operario SET email_operario = ? WHERE id = ?");
             pstmt.setString(1, novoEmail);
             pstmt.setInt(2, id);
 
@@ -142,7 +143,7 @@ public class OperarioDAO {
         boolean resultado = false;
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement("UPDATE operario SET cargo = ? WHERE id = ?");
+            pstmt = conn.prepareStatement("UPDATE operario SET cargo_operario = ? WHERE id = ?");
             pstmt.setString(1, novoCargo);
             pstmt.setInt(2, id);
             resultado = pstmt.executeUpdate() > 0;
@@ -162,10 +163,10 @@ public class OperarioDAO {
         }
         return resultado;
 
-    } 
+    }
 
 
-    
+
     public Operario buscarPorId(int id) {
         Operario operario = null;
         ConexaoDB conexao = new ConexaoDB();
@@ -179,12 +180,11 @@ public class OperarioDAO {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 operario = new Operario(
-                    rs.getString("cpf"),
-                    rs.getString("nome"),
-                    rs.getString("email"),
-                    rs.getString("cargo"),
-                    rs.getString("cnpj_empresa"),
-                    rs.getString("id_empresa")        
+                        rs.getString("cpf"),
+                        rs.getInt("id_empresa"),
+                        rs.getString("nome"),
+                        rs.getString("email_operario"),
+                        rs.getString("cargo_operario")
                 );
                 operario.setId(rs.getInt("id"));
             }
@@ -210,55 +210,55 @@ public class OperarioDAO {
     }
 
     public List<Operario> buscarPorFiltro(Map<String, Object> campos) {
-    ConexaoDB conMan = new ConexaoDB();
-    List<Operario> listaOperarios = new ArrayList<>();
-    Connection conn = null;
-    PreparedStatement pstm = null;
-    ResultSet rs = null;
+        ConexaoDB conMan = new ConexaoDB();
+        List<Operario> listaOperarios = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
 
-    try {
-        conn = conMan.conectar();
-
-        StringBuilder sql = new StringBuilder("SELECT * FROM operario WHERE ");
-        int i = 0;
-        for (String coluna : campos.keySet()) {
-            sql.append(coluna).append(" = ?");
-            if (++i < campos.size()) sql.append(" AND ");
-        }
-
-        pstm = conn.prepareStatement(sql.toString());
-        int contador = 1;
-        for (Object valor : campos.values()) {
-            pstm.setObject(contador++, valor);
-        }
-
-        rs = pstm.executeQuery();
-        while (rs.next()) {
-            Operario operario = new Operario(
-                rs.getString("cpf"),
-                rs.getString("nome"),
-                rs.getString("email_operario"),
-                rs.getString("cargo_operario"),
-                rs.getString("id_empresa"),
-                rs.getString("horario_trabalho")
-            );
-            operario.setId(rs.getInt("id"));
-            listaOperarios.add(operario);
-        }
-
-    } catch (SQLException exc) {
-        System.out.println("Erro ao buscar por filtro: " + exc.getMessage());
-    } finally {
         try {
-            if (rs != null) rs.close();
-            if (pstm != null) pstm.close();
-            if (conn != null) conMan.desconectar(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            conn = conMan.conectar();
+
+            StringBuilder sql = new StringBuilder("SELECT * FROM operario WHERE ");
+            int i = 0;
+            for (String coluna : campos.keySet()) {
+                sql.append(coluna).append(" = ?");
+                if (++i < campos.size()) sql.append(" AND ");
+            }
+
+            pstm = conn.prepareStatement(sql.toString());
+            int contador = 1;
+            for (Object valor : campos.values()) {
+                pstm.setObject(contador++, valor);
+            }
+
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                Operario operario = new Operario(
+                        rs.getString("cpf"),
+                        rs.getString("nome"),
+                        rs.getString("email_operario"),
+                        rs.getString("cargo_operario"),
+                        rs.getInt("id_empresa"),
+                        rs.getTime("horario_trabalho")
+                );
+                operario.setId(rs.getInt("id"));
+                listaOperarios.add(operario);
+            }
+
+        } catch (SQLException exc) {
+            System.out.println("Erro ao buscar por filtro: " + exc.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstm != null) pstm.close();
+                if (conn != null) conMan.desconectar(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return listaOperarios;
     }
-    return listaOperarios;
-}
 
     public boolean deletarOperario(int id) {
         ConexaoDB conexao = new ConexaoDB();
@@ -282,10 +282,10 @@ public class OperarioDAO {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            } 
+            }
         }
         return resultado;
-    
+
     }
 
     public List<Operario> listarOperarios() {
@@ -301,11 +301,10 @@ public class OperarioDAO {
             while (rset.next()) {
                 Operario operario = new Operario(
                         rset.getString("cpf"),
+                        rset.getInt("id_empresa"),
                         rset.getString("nome"),
                         rset.getString("email_operario"),
-                        rset.getString("cargo_operario"),
-                        rset.getString("cnpj_empresa"),
-                        rset.getString("id_empresa")
+                        rset.getString("cargo_operario")
                 );
                 operario.setId(rset.getInt("id"));
                 listaOperarios.add(operario);
@@ -315,6 +314,6 @@ public class OperarioDAO {
         }
         return listaOperarios;
     }
-    
+
 
 }
