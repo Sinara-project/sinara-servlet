@@ -21,24 +21,9 @@
 
     <main>
         <%@include file="/padrao/lista-superior.jsp"%>
-        
         <h1 id="titulo-analise">Relatórios e Formulários</h1>
-
-        <div id="container-relatorios">
-            <div class="relatorios-dashboards">
-                <div class="bloco-formulario">
-                    <h2 class="titulo-formulario">Formulário 24/09</h2>
-                    <p class="descricao-formulario">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum a dolore laboriosam! Autem, nobis sequi quis nihil commodi incidunt impedit qui at cupiditate facere quod quam omnis, accusamus animi soluta!</p>
-                </div>
-                <img src="<%=request.getContextPath()%>/img/grafico-laranja.svg" alt="">
-            </div>
-            <div class="relatorios-dashboards">
-                <div class="bloco-formulario">
-                    <h2 class="titulo-formulario">Formulário 25/09</h2>
-                    <p class="descricao-formulario">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum a dolore laboriosam! Autem, nobis sequi quis nihil commodi incidunt impedit qui at cupiditate facere quod quam omnis, accusamus animi soluta!</p>
-                </div>
-                <img src="<%=request.getContextPath()%>/img/grafico-azul.svg" alt="">
-            </div>
+        <div class="container">
+            <iframe title="SinaraProjet" src="https://app.powerbi.com/view?r=eyJrIjoiM2I1ZmJhZTctN2ZkNy00NjkyLWE3ZDgtMjdlNjAwMjMyMTE1IiwidCI6ImIxNDhmMTRjLTIzOTctNDAyYy1hYjZhLTFiNDcxMTE3N2FjMCJ9" frameborder="0" allowFullScreen="true"></iframe>
         </div>
     </main>
 </body>
