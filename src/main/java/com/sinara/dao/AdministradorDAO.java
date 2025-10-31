@@ -17,35 +17,56 @@ public class AdministradorDAO {
         boolean resultado;
         int id = 0;
 
-        Connection conn = conMan.conectar();
-        String sql = "INSERT INTO Permissoes (inserir_dados, editar_dados, visualizar_relatorios, aprovar_registros, gerenciar_usuarios) " +
-                "VALUES (?, ?, ?, ?, ?)";
+            Connection conn = conMan.conectar();
+            String sql = "INSERT INTO Permissoes (inserir_dados, editar_dados, visualizar_relatorios, aprovar_registros, gerenciar_usuarios) " +
+                    "VALUES (?, ?, ?, ?, ?)";
 //                    "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissao) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement pstmPerm = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-        // Valores para criação da permissão
-        pstmPerm.setBoolean(1, admin.getPermissoes().temPermissao(1));
-        pstmPerm.setBoolean(2, admin.getPermissoes().temPermissao(2));
-        pstmPerm.setBoolean(3, admin.getPermissoes().temPermissao(3));
-        pstmPerm.setBoolean(4, admin.getPermissoes().temPermissao(4));
-        pstmPerm.setBoolean(5, admin.getPermissoes().temPermissao(5));
-        pstmPerm.executeUpdate();
-        ResultSet rset = pstmPerm.getGeneratedKeys();
-        if (rset.next()) {
-            id = rset.getInt(1);
-        }
-        sql = "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissoes, id_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement pstmAdm = conn.prepareStatement(sql);
-        pstmAdm.setString(1, admin.getCpf());
-        pstmAdm.setString(2, admin.getNome());
-        pstmAdm.setString(3, admin.getEmail());
-        pstmAdm.setString(4, admin.getCargo());
-        pstmAdm.setString(5, admin.getSenha());
-        pstmAdm.setInt(6, id);
-        pstmAdm.setInt(7, admin.getIdEmpresa());
-        resultado = pstmAdm.executeUpdate() > 0;
+            PreparedStatement pstmPerm = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            // Valores para criação da permissão
+            pstmPerm.setBoolean(1, admin.getPermissoes().temPermissao(1));
+            pstmPerm.setBoolean(2, admin.getPermissoes().temPermissao(2));
+            pstmPerm.setBoolean(3, admin.getPermissoes().temPermissao(3));
+            pstmPerm.setBoolean(4, admin.getPermissoes().temPermissao(4));
+            pstmPerm.setBoolean(5, admin.getPermissoes().temPermissao(5));
+            pstmPerm.executeUpdate();
+            ResultSet rset = pstmPerm.getGeneratedKeys();
+            if (rset.next()) {
+                id = rset.getInt(1);
+            }
+            sql = "INSERT INTO Administrador (cpf, nome, email_admin, cargo, senha, id_permissoes, id_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmAdm = conn.prepareStatement(sql);
+            pstmAdm.setString(1, admin.getCpf());
+            pstmAdm.setString(2, admin.getNome());
+            pstmAdm.setString(3, admin.getEmail());
+            pstmAdm.setString(4, admin.getCargo());
+            pstmAdm.setString(5, admin.getSenha());
+            pstmAdm.setInt(6, id);
+            pstmAdm.setInt(7, admin.getidEmpresa());
+            resultado = pstmAdm.executeUpdate() > 0;
         return resultado;
-    }    // Alterações
+    }
+    // Alterações
 
+    public boolean inserirUUID(int id, String uuid) {
+        ConexaoDB conMan = new ConexaoDB();
+        boolean resultado = false;
+
+
+        try (Connection conn = conMan.conectar();) {
+            String sql = "UPDATE Administrador SET token_administracao = ? WHERE id = ? ";
+            try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+                pstm.setInt(2, id);
+                pstm.setString(1, uuid);
+
+                resultado = pstm.executeUpdate() > 0;
+                conMan.desconectar(conn);
+                return resultado;
+            }
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            return resultado;
+        }
+    }
     public boolean alterarNome(int id, String nome) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;
@@ -117,10 +138,10 @@ public class AdministradorDAO {
 
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "UPDATE Administrador WHERE id = ? SET senha = ?";
+            String sql = "UPDATE Administrador SET senha = ? WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(1, id);
-                pstm.setString(2, senha);
+                pstm.setInt(2, id);
+                pstm.setString(1, senha);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
@@ -155,30 +176,11 @@ public class AdministradorDAO {
                 }
                 ResultSet rset = pstm.executeQuery();
                 while (rset.next()) {
-                    PreparedStatement pstmPerm = conn.prepareStatement("SELECT * FROM Permissoes WHERE id = ?");
-                    pstmPerm.setInt(1, rset.getInt("id_permissoes"));
-                    ResultSet rsetPerm = pstmPerm.executeQuery();
-                    listaAdministradores.add(new Administrador(
-                            rset.getString("nome"),
-                            rset.getString("email_admin"),
-                            rset.getString("senha"),
-                            rset.getString("cpf"),
-                            rset.getString("cargo"),
-                            rset.getInt("id_empresa")
-                    ));
-                    Administrador adminAtual = listaAdministradores.get(listaAdministradores.size() - 1);
-                    adminAtual.setId(rset.getInt("id"));
-
-                    if (rsetPerm.next()) {
-                        adminAtual.getPermissoes().setPermissao(1, rsetPerm.getBoolean(2));
-                        adminAtual.getPermissoes().setPermissao(2, rsetPerm.getBoolean(3));
-                        adminAtual.getPermissoes().setPermissao(3, rsetPerm.getBoolean(4));
-                        adminAtual.getPermissoes().setPermissao(4, rsetPerm.getBoolean(5));
-                        adminAtual.getPermissoes().setPermissao(5, rsetPerm.getBoolean(6));
-                        adminAtual.getPermissoes().setId(rsetPerm.getInt(1)); // Corrigido
-                    } else {
-                        System.out.println("Permissões não encontradas para o admin ID: " + rset.getInt("id"));
-                    }
+                    listaAdministradores.add(new Administrador(rset.getString("nome"),
+                            rset.getString("email_admin"), rset.getString("senha"),
+                            rset.getString("cpf"), rset.getString("cargo"),
+                            rset.getInt("id_empresa")));
+                    listaAdministradores.get(listaAdministradores.size()-1).setId(rset.getInt("id"));
                 }
             }
             conMan.desconectar(conn);
@@ -231,6 +233,25 @@ public class AdministradorDAO {
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setInt(1, id);
                 pstm.setInt(2, idPerm);
+
+                resultado = pstm.executeUpdate() > 0;
+                conMan.desconectar(conn);
+                return resultado;
+            }
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+            return resultado;
+        }
+    }
+    public boolean deletarUUID(int id) {
+        ConexaoDB conMan = new ConexaoDB();
+        boolean resultado = false;
+
+
+        try (Connection conn = conMan.conectar();) {
+            String sql = "UPDATE Administrador SET token_administracao = '' WHERE id = ? ";
+            try (PreparedStatement pstm = conn.prepareStatement(sql)) {
+                pstm.setInt(1, id);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);
