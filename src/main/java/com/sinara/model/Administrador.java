@@ -8,18 +8,18 @@ public class Administrador {
     private String senha;
     private final String cpf;
     private String cargo;
-    private final String cnpjEmpresa;
+    private final int idEmpresa;
     private Permissoes permissoes;
 
     // Construtores
-    public Administrador(String nome, String email, String senha, String cpf, String cargo, String cnpjEmpresa) {
+    public Administrador(String nome, String email, String senha, String cpf, String cargo, int idEmpresa) {
         this.id = null;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.cpf = cpf;
         this.cargo = cargo;
-        this.cnpjEmpresa = cnpjEmpresa;
+        this.idEmpresa = idEmpresa;
         this.permissoes = new Permissoes(false, false,
                 true, true, true);
     }
@@ -52,8 +52,8 @@ public class Administrador {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
-    public String getCnpjEmpresa() {
-        return cnpjEmpresa;
+    public int getIdEmpresa() {
+        return idEmpresa;
     }
     public String getCpf() {
         return cpf;
