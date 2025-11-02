@@ -1,187 +1,209 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.sinara.model.Operario" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="com.sinara.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    List<String> erros = (List<String>) session.getAttribute("erros");
+    String message = (String) session.getAttribute("message");
+    List<Operario> listaOperarios = (List<Operario>) request.getAttribute("listaOperarios");
+    Map<Integer, String> idParaNome = (Map<Integer, String>) request.getAttribute("idParaNome");
+
+    if (message != null) {
+        session.removeAttribute("message");
+    }
+%>
+
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Funcionários</title>
-        <link rel="shortcut icon" href="<%=request.getContextPath()%>/img/Sinarinha.svg" type="image/x-icon">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/funcionario.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/aside.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/geral.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/main.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/lista-superior.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários</title>
+    <link rel="shortcut icon" href="<%=request.getContextPath()%>/img/Sinarinha.svg" type="image/x-icon">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/funcionario.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/aside.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/geral.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/main.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/lista-superior.css">
+</head>
+<body>
 
-        <!-- Barra Lateral -->
-        <%@include file="/padrao/aside.jsp"%>
+<%@include file="/padrao/aside.jsp"%>
 
-        <!-- Seção Principal -->
-        <main>
-            <%@include file="/padrao/lista-superior.jsp"%>
+<main>
+    <%@include file="/padrao/lista-superior.jsp"%>
 
-            <div id="container-titulo-botoes">
-                <h1 id="titulo">Funcionários</h1>
-                <div id="container-adicionar">
-                    <button id="botao-adicionar"><p>Adicionar</p></button>
-                </div>
+    <div id="container-titulo-botoes">
+        <h1 id="titulo">Funcionários</h1>
+        <% if (message != null) { %>
+        <p style="color: rgb(14,197,75)"> <%= message %> ✓</p>
+        <% } %>
+
+        <% if (erros != null && !erros.isEmpty()) {
+            for (String erro : erros) { %>
+        <p style="color: rgb(201,16,16); font-weight: 700;"><%= erro %> ⚠︎</p>
+        <% }
+            session.removeAttribute("erros");
+        } %>
+
+        <div id="container-adicionar">
+            <button id="botao-adicionar"><p>Adicionar</p></button>
+        </div>
+    </div>
+
+    <div id="tabula">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>EMAIL</th>
+                <th>NOME</th>
+                <th>CARGO</th>
+                <th>EMPRESA</th>
+                <th>CPF</th>
+                <th>AÇÕES</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if (listaOperarios != null && !listaOperarios.isEmpty()) {
+                for (Operario operario : listaOperarios) { %>
+            <tr data-id="<%= operario.getId() %>"
+                data-cargo="<%= operario.getCargo() %>"
+                data-empresa="<%= idParaNome != null ? idParaNome.get(operario.getIdEmpresa()) : "" %>"
+                data-cpf="<%= operario.getCpf() %>">
+                <td><%= operario.getId() %></td>
+                <td><%= operario.getEmail() %></td>
+                <td><%= operario.getNome() %></td>
+                <td><%= operario.getCargo() %></td>
+                <td><%= idParaNome != null ? idParaNome.get(operario.getIdEmpresa()) : "" %></td>
+                <td><%= operario.getCpf() %></td>
+                <td>
+                    <div class="menu-container">
+                        <button class="opcoes-btn">
+                            <img src="<%=request.getContextPath()%>/img/tres_pontinhos.svg" alt="menu">
+                        </button>
+                        <div class="menu-opcoes">
+                            <button class="btn-editar">Editar</button>
+                            <form action="<%= request.getContextPath() %>/operarios?action=excluir"
+                                  method="post">
+                                <input type="hidden" name="id" value="<%= operario.getId() %>">
+                                <button class="btn-excluir" type="submit">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <% } } %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Adicionar Funcionário -->
+    <form id="modal-func" class="modal" method="post" action="<%=request.getContextPath()%>/operarios?action=inserir">
+        <div class="modal-content">
+            <h2>Adicionar Funcionário</h2>
+
+            <div class="input-group">
+                <label>
+                    <img src="/img/user.svg" alt>
+                    <input id="addNome" type="text" name="nome" placeholder="Digite o nome completo" required>
+                </label>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>EMAIL</th>
-                        <th>NOME</th>
-                        <th>CARGO</th>
-                        <th>EMPRESA</th>
-                        <th>CPF</th>
-                        <th>AÇÕES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-id="1" data-cargo="Operador Geral"
-                        data-empresa="EcoLen" data-cpf="22***4*1**">
-                        <td>1</td>
-                        <td>sophiaabiaki24@gmail.com</td>
-                        <td>Sophia Castro</td>
-                        <td>Operador Geral</td>
-                        <td>EcoLen</td>
-                        <td>22***4*1**</td>
-                        <td>
-                            <div class="menu-container">
-                                <button class="opcoes-btn">
-                                    <img src="<%=request.getContextPath()%>/img/tres_pontinhos.svg"
-                                        alt="menu">
-                                </button>
-                                <div class="menu-opcoes">
-                                    <button class="btn-editar">Editar</button>
-                                    <button class="btn-excluir">Excluir</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr data-id="2" data-cargo="Operador Administrativo"
-                        data-empresa="EcoLen" data-cpf="31***5*3**">
-                        <td>2</td>
-                        <td>gabrieldahora@gmail.com</td>
-                        <td>Gabriel Hora</td>
-                        <td>Operador Administrativo</td>
-                        <td>EcoLen</td>
-                        <td>31***5*3**</td>
-                        <td>
-                            <div class="menu-container">
-                                <button class="opcoes-btn">
-                                    <img src="<%=request.getContextPath()%>/img/tres_pontinhos.svg"
-                                        alt="menu">
-                                </button>
-                                <div class="menu-opcoes">
-                                    <button class="btn-editar">Editar</button>
-                                    <button class="btn-excluir">Excluir</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr data-id="3" data-cargo="Operário" data-empresa="EcoLen"
-                        data-cpf="98***3*9**">
-                        <td>3</td>
-                        <td>viniciuscastro@gmail.com</td>
-                        <td>Vinícius Castro</td>
-                        <td>Operário</td>
-                        <td>EcoLen</td>
-                        <td>98***3*9**</td>
-                        <td>
-                            <div class="menu-container">
-                                <button class="opcoes-btn">
-                                    <img src="<%=request.getContextPath()%>/img/tres_pontinhos.svg"
-                                        alt="menu">
-                                </button>
-                                <div class="menu-opcoes">
-                                    <button class="btn-editar">Editar</button>
-                                    <button class="btn-excluir">Excluir</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Modal de Edição -->
-            <div id="editarModal" class="modal">
-                <div class="modal-content">
-                    <h2>Editar Funcionário</h2>
-
-                    <input type="hidden" id="editId">
-
-                    <label>Nome:</label>
-                    <input type="text" id="editNome"
-                        placeholder="Nome completo">
-
-                    <label>Email:</label>
-                    <input type="email" id="editEmail" placeholder="Email">
-
-                    <label>Cargo:</label>
-                    <input type="text" id="editCargo" placeholder="Cargo">
-
-                    <div class="modal-buttons">
-                        <button id="salvarEdicao">Salvar</button>
-                        <button id="cancelarEdicao">Cancelar</button>
-                    </div>
-                </div>
+            <div class="input-group">
+                <label>
+                    <img src="/img/email.svg" alt>
+                    <input id="addEmail" type="email" name="email" placeholder="Digite o Email" required>
+                </label>
             </div>
 
-            <!-- Modal de Adicionar Funcionário -->
-            <div id="modal-func" class="modal" aria-hidden="true">
-                <div class="modal-content">
-                    <h2>Adicionar Funcionário</h2>
-
-                    <div class="input-group">
-                        <label>
-                            <img src="<%=request.getContextPath()%>/img/user.svg" alt>
-                            <input id="addNome" type="text"
-                                placeholder="Digite o nome completo">
-                        </label>
-                    </div>
-
-                    <div class="input-group">
-                        <label>
-                            <img src="<%=request.getContextPath()%>/img/email.svg" alt>
-                            <input id="addEmail" type="email"
-                                placeholder="Digite o Email">
-                        </label>
-                    </div>
-
-                    <div class="input-group">
-                        <label>
-                            <img src="<%=request.getContextPath()%>/img/cargo.svg" alt>
-                            <input id="addCargo" type="text"
-                                placeholder="Digite o Cargo">
-                        </label>
-                    </div>
-
-                    <div class="input-group">
-                        <label>
-                            <img src="<%=request.getContextPath()%>/img/empresa.svg" alt>
-                            <input id="addEmpresa" type="text"
-                                placeholder="Digite o nome da Empresa">
-                        </label>
-                    </div>
-
-                    <div class="input-group">
-                        <label>
-                            <img src="<%=request.getContextPath()%>/img/cpf.svg" alt>
-                            <input id="addCPF" type="text"
-                                placeholder="Digite o CPF">
-                        </label>
-                    </div>
-
-                    <button id="btnAdicionarEnviar"
-                        class="btn-primary">Adicionar</button>
-                </div>
+            <div class="input-group">
+                <label>
+                    <img src="/img/cargo.svg" alt>
+                    <input id="addCargo" type="text" name="cargo" placeholder="Digite o Cargo">
+                </label>
             </div>
 
-        </main>
+            <div class="input-group">
+                <label>
+                    <img src="/img/empresa.svg" alt>
+                    <input list="empresas-list" id="addEmpresa" name="empresa" placeholder="Digite o nome da Empresa">
+                </label>
+                <datalist id="empresas-list">
+                    <%
+                        List<Empresa> listaEmpresas = (List<Empresa>) request.getAttribute("listaEmpresas");
+                        if (listaEmpresas != null) {
+                            for (Empresa emp : listaEmpresas) {
+                    %>
+                    <option value="<%= emp.getNome() %>"></option>
+                    <%
+                            }
+                        }
+                    %>
+                </datalist>
+            </div>
 
-        <script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
-    </body>
+            <div class="input-group">
+                <label>
+                    <img src="/img/password.svg" alt>
+                    <input id="addSenha" type="password" name="senha" placeholder="Digite a Senha" required>
+                </label>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    <img src="/img/cpf.svg" alt>
+                    <input id="addCPF" type="text" name="cpf" placeholder="Digite o CPF" maxlength="14" required>
+                </label>
+            </div>
+
+            <div class="input-group">
+                <label for="addHorario">Horário total de trabalho:</label>
+                <input id="addHorario" type="time" name="horarioTrabalho" required>
+            </div>
+
+            <button class="btn-primary" type="submit">Adicionar</button>
+        </div>
+    </form>
+
+    <!-- Modal de Edição -->
+    <form id="editarModal" class="modal" action="<%= request.getContextPath() %>/operarios?action=atualizar" method="post">
+        <div class="modal-content">
+            <h2>Editar Funcionário</h2>
+
+            <input type="hidden" id="editId" name="id">
+
+            <div class="input-group">
+                <label>Nome:
+                    <input type="text" id="editNome" name="nome">
+                </label>
+            </div>
+            <div class="input-group">
+                <label>Email:
+                    <input type="email" id="editEmail" name="email">
+                </label>
+            </div>
+            <div class="input-group">
+                <label>Cargo:
+                    <input type="text" id="editCargo" name="cargo">
+                </label>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="salvarEdicao" class="botao" type="submit">Salvar</button>
+                <button id="cancelarEdicao" class="botao" type="button">Cancelar</button>
+            </div>
+        </div>
+    </form>
+
+</main>
+
+
+
+<script src="<%= request.getContextPath() %>/JavaScript/tabela2.js"></script>
+<script src="<%=request.getContextPath()%>/JavaScript/pesquisa.js"></script>
+
+
+</body>
 </html>

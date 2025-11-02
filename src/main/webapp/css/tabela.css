@@ -78,3 +78,9 @@ th, td {
 .modal-btns button {
   margin-left: 10px;
 }
+
+
+.tabula {
+  height: 500px;
+  overflow: scroll;
+}

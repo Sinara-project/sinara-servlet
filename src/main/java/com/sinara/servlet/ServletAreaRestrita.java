@@ -84,7 +84,7 @@ public class ServletAreaRestrita extends HttpServlet {
             erros.add("* Credenciais incorretas");
         } finally {
             if
-                (erros.isEmpty()) resp.sendRedirect(req.getContextPath() + "/arearestrita");
+            (erros.isEmpty()) resp.sendRedirect(req.getContextPath() + "/arearestrita");
             else
                 resp.sendRedirect(req.getContextPath()+"/arearestrita?action=login");
         }
@@ -157,4 +157,5 @@ public class ServletAreaRestrita extends HttpServlet {
         }
         return false;
     }
+
 }

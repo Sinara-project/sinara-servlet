@@ -223,16 +223,14 @@ public class AdministradorDAO {
 
 
 
-    public boolean deletarAdministrador(int idPerm, int id) {
+    public boolean deletarAdministrador(int id) {
         ConexaoDB conMan = new ConexaoDB();
         boolean resultado = false;
 
         try (Connection conn = conMan.conectar();) {
-            String sql = "DELETE FROM Administrador WHERE id = ?; " +
-                    "DELETE FROM Permissoes WHERE id = ?";
+            String sql = "DELETE FROM Administrador WHERE id = ?; ";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
                 pstm.setInt(1, id);
-                pstm.setInt(2, idPerm);
 
                 resultado = pstm.executeUpdate() > 0;
                 conMan.desconectar(conn);

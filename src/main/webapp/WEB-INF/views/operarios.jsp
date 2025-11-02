@@ -29,8 +29,8 @@
 <h1>Operários</h1>
 
 <% if (message != null) {
-    String classe = message.toLowerCase().contains("sucesso") ? "success" : "error"; %>
-<div class="<%= classe %>"><%= message %></div>
+    %>
+<div class=""><%= message %></div>
 <% } %>
 
 <%
