@@ -41,7 +41,7 @@ public class AdministradorDAO {
             pstmAdm.setString(4, admin.getCargo());
             pstmAdm.setString(5, admin.getSenha());
             pstmAdm.setInt(6, id);
-            pstmAdm.setInt(7, admin.getidEmpresa());
+            pstmAdm.setInt(7, admin.getIdEmpresa());
             resultado = pstmAdm.executeUpdate() > 0;
         return resultado;
     }
