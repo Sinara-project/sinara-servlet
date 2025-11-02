@@ -32,7 +32,7 @@
     </div>
     <%@include file="/padrao/mensagens.jsp"%>
     <div id="tabula">
-    <table>
+    <table id="tabela">
         <thead>
         <tr>
             <th>ID</th>
@@ -116,6 +116,6 @@
 </main>
 
 <script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
-<script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
+<script src="<%=request.getContextPath()%>/JavaScript/pesquisa.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
     <li id="barra-pesquisa">
         <label>
             <img src="<%=request.getContextPath()%>/img/lupa.svg" alt="lupa">
-            <input type="search" placeholder="Pesquisar">
+            <input type="search" placeholder="Pesquisar" id="valorFiltro">
         </label>
     </li>
     <li class="icones-superior">
