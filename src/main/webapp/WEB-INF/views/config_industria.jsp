@@ -1,12 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.sinara.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String status;
-    String mensagem = (String) request.getAttribute("mensagem");
-    List<String> erros = (List<String>) request.getAttribute("erro");
-    List<Empresa> empresas = (List<Empresa>) request.getAttribute("empresas");
-%>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">

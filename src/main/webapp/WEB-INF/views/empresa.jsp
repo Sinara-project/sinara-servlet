@@ -116,5 +116,6 @@
 </main>
 
 <script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
+<script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
 </body>
 </html>
