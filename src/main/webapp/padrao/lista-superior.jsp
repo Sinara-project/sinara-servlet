@@ -3,13 +3,13 @@
     <li>
         <div id="perfil">
             <div id="foto"></div>
-            <P>Bem-vindo,<br><b>Fulano</b> </P>
+            <P>Bem-vindo,<br><b><%=request.getSession().getAttribute("user")%></b> </P>
         </div>
     </li>
     <li id="barra-pesquisa">
         <label>
             <img src="<%=request.getContextPath()%>/img/lupa.svg" alt="lupa">
-            <input type="search" placeholder="Pesquisar">
+            <input type="search" placeholder="Pesquisar" id="valorFiltro">
         </label>
     </li>
     <li class="icones-superior">

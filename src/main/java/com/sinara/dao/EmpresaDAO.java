@@ -303,14 +303,16 @@ public class EmpresaDAO {
             conn = conMan.conectar();
             String sql = "DELETE FROM Empresa WHERE id = ?";
             try (PreparedStatement pstm = conn.prepareStatement(sql)) {
-                pstm.setInt(2, id);
+                pstm.setInt(1, id);
 
                 if (pstm.executeUpdate() <= 0) return 0;
                 conMan.desconectar(conn);
             }
         } catch (SQLException exc) {
+            exc.printStackTrace();
             return 2;
         } catch (NullPointerException exc) {
+            exc.printStackTrace();
             return -1;
         }
         return 1;
