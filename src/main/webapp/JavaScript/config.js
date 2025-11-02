@@ -30,7 +30,6 @@ const empresas = [
       empresa4: "Ronaldo sedutor",
       info4: "Olha patrai patrai"
     }
-
   ];
 
   let index = 0;

@@ -26,7 +26,7 @@
     font-weight: 600;
     color: var(--branco);
 }
- 
+
 .container{
     background-color: #E8EDFF;
     width: 20vw;
@@ -53,6 +53,7 @@
 #configs button {
     color: #FF7655;
 }
+
 #btnAdicionarFunc {
     background: #FF7A59;
     color: white;
@@ -115,19 +116,4 @@
     flex: 1;
     font-size: 15px;
     padding-right: 100px;
-}
-
-#botao-adicionar{
-    background: #FF7A59;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#botao-adicionar:hover {
-    background: var(--laranja-hover);
 }

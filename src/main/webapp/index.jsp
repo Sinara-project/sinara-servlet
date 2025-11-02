@@ -21,7 +21,7 @@
         <form action="arearestrita" method="post">
             <input id="email" type="email" name="email" placeholder="Digite seu Email">
             <input id="password" type="password" name="senha" placeholder="Digite sua Senha">
-            <input type="submit" name="button" value="Login">
+            <input type="submit" class="botao" name="button" value="Login">
             <!-- Se incorreta a senha: -->
             <%
             List<String> erros = (List<String>) request.getAttribute("erros");

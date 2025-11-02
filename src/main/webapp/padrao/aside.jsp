@@ -33,7 +33,7 @@
 
             <li>
                 <a href="<%=request.getContextPath()%>/arearestrita?page=admin" class="container-botoes" id="admins">
-                    <img src="<%=request.getContextPath()%>/img/admin.svg" alt="">
+                    <img src="<%=request.getContextPath()%>/img/user.svg" alt="">
                     <button class="botoes-aside">Administradores</button>
                 </a>
             </li>

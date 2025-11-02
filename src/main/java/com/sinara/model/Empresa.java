@@ -216,8 +216,8 @@ public class Empresa {
             exc.printStackTrace();
             return 3;
         } catch (NullPointerException exc) {
-            exc.printStackTrace();
-            return -1;
+            this.status = false;
+            return 0;
         }
         return 1;
     }

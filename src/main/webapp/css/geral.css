@@ -58,3 +58,19 @@ a{
     background-color: var(--laranja-sinara);
     color: white;
 }
+
+.botao {
+    background: var(--laranja-sinara);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    min-width: fit-content;
+}
+
+.botao:hover {
+    background: var(--laranja-hover);
+}

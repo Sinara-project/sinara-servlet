@@ -20,24 +20,25 @@ public class EmpresaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-        if (action==null) {
-            listarEmpresas(req, resp);
-        } else switch (action) {
-            case "visaoGeral" -> {
-                visaoGeral(req, resp);
-            }
-            case "editar" -> {
-                editarEmpresa(req, resp);
-            }
-            case "excluir" -> {
-                excluirEmpresa(req, resp);    
-            }
-            case "add" -> {
-                req.getRequestDispatcher("/WEB-INF/views/addEmpresa.jsp").forward(req, resp);
-            }
-            default -> {
-                listarEmpresas(req, resp);
+        List<String> erros = new LinkedList<>();
+        if (ServletAreaRestrita.ehLogado(req, resp, erros)) {
+            String action = req.getParameter("action");
+            if (action == null) {
+                List<Empresa> empresas = empDao.listarEmpresas();
+                req.setAttribute("empresas", empresas);
+                req.getRequestDispatcher("/WEB-INF/views/config_industria.jsp").forward(req, resp);
+            } else switch (action) {
+                case "visaoGeral" -> {
+                    visaoGeral(req, resp);
+                }
+                case "listar" -> {
+                    listarEmpresas(req, resp);
+                }
+                default -> {
+                    List<Empresa> empresas = empDao.listarEmpresas();
+                    req.setAttribute("empresas", empresas);
+                    req.getRequestDispatcher("/WEB-INF/views/config_industria.jsp");
+                }
             }
         }
     }
@@ -46,11 +47,13 @@ public class EmpresaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         switch (action) {
-            case "adicionar" -> {
-                adicionarEmpresa(req, resp);
-            }
             case "atualizar" -> {
                 atualizarEmpresa(req, resp);
+            }
+            case "adicionar" -> {
+                adicionarEmpresa(req, resp);
+            } case "excluir" -> {
+                excluirEmpresa(req, resp);
             }
             default -> {
                 listarEmpresas(req, resp);
@@ -61,34 +64,12 @@ public class EmpresaServlet extends HttpServlet {
     public void listarEmpresas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Empresa> empresas = empDao.listarEmpresas();
         req.setAttribute("empresas", empresas);
-        req.getRequestDispatcher("/WEB-INF/views/empresasAnalise.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/empresa.jsp").forward(req, resp);
     }
     public void visaoGeral(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<VisaoGeral> listaVisoes = empDao.listarVisoes();
         req.setAttribute("empresas", listaVisoes);
         req.getRequestDispatcher("/WEB-INF/views/visaoGeral.jsp").forward(req, resp);
-    }
-
-    public void editarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> erro = new LinkedList<>();
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            Map<String, Object> filtro = new HashMap<>();
-            filtro.put("id", id);
-            List<Empresa> empresa = empDao.buscarPorFiltro(filtro);
-            if (!empresa.isEmpty()) {
-                Empresa emp = empresa.get(0);
-                req.setAttribute("empresa", emp);
-                req.getRequestDispatcher("/WEB-INF/views/editarEmpresa.jsp").forward(req, resp);
-            } else {
-                erro.add("A Empresa não foi encontrada!");
-                req.setAttribute("erro", erro);
-            }
-        } catch (IllegalArgumentException exc) {
-            req.setAttribute("erro", erro);
-            erro.add("ID não corresponde à um número");
-        }
-        req.getRequestDispatcher("/empresas?action=listar").forward(req, resp);
     }
 
     public void excluirEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -102,7 +83,6 @@ public class EmpresaServlet extends HttpServlet {
         }
         req.getRequestDispatcher("/empresas?action=listar").forward(req, resp);
     }
-
     public void adicionarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> erros = new LinkedList<>();
         String dataStr = req.getParameter("inicioPlano");
@@ -127,22 +107,23 @@ public class EmpresaServlet extends HttpServlet {
         } else {
             req.setAttribute("empresa", empresa);
             req.setAttribute("erro", erros);
-            req.getRequestDispatcher("/WEB-INF/views/addEmpresa.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/empresa.jsp").forward(req, resp);
         }
     }
-
     public void atualizarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> erros = new LinkedList<>();
         Empresa empresa = new Empresa(Integer.parseInt(req.getParameter("id")), req.getParameter("nome"), req.getParameter("email"),
-        req.getParameter("ramo"), req.getParameter("telefone"), req.getParameter("status"), erros);
+                req.getParameter("ramo"), req.getParameter("telefone"), req.getParameter("status"), erros);
 
         if (empDao.alterarEmpresa(empresa, erros)) { // Se não há erros
             req.setAttribute("mensagem", "Dados alterados com sucesso!");
             req.getRequestDispatcher("/empresas?action=listar").forward(req, resp);
         } else { // Se há erros
             req.setAttribute("erro", erros);
-            req.setAttribute("empresa", empresa);
-            req.getRequestDispatcher("/WEB-INF/views/editarEmpresa.jsp").forward(req, resp);
+            List<Empresa> empresas = new LinkedList<>();
+            empresas.add(empresa);
+            req.setAttribute("empresa", empresas);
+            listarEmpresas(req, resp);
         }
     }
 }

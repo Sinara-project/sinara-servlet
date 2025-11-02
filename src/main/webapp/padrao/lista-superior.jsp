@@ -3,7 +3,7 @@
     <li>
         <div id="perfil">
             <div id="foto"></div>
-            <P>Bem-vindo,<br><b>Fulano</b> </P>
+            <P>Bem-vindo,<br><b><%=request.getSession().getAttribute("user")%></b> </P>
         </div>
     </li>
     <li id="barra-pesquisa">
