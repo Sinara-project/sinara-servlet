@@ -6,10 +6,11 @@ import com.sinara.model.Administrador;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import com.sinara.servlet.ServletAreaRestrita;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -25,40 +26,48 @@ public class ServletAdministracao extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtém o parâmetro "action" para rotear a requisição GET.
+        List<String> erros = new LinkedList<>();
+        // Verifica se o usuário está logado
+
+
+        // Obtém o parâmetro "action" para rotear a requisição GET
         String action = request.getParameter("action");
         if (action == null) {
-            // Se nenhuma ação for especificada, a ação padrão é listar todos os administradores.
             listarAdministradores(request, response);
             return;
         }
 
-        // Direciona para o método apropriado com base na ação.
         switch (action) {
-            case "editar" -> buscarAdministrador(request,response);
+            case "editar" -> buscarAdministrador(request, response);
             case "adicionar" -> adicionarAdministrador(request, response);
             default -> listarAdministradores(request, response);
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Roteia as requisições POST, que geralmente alteram dados (criar, editar, excluir).
+        List<String> erros = new LinkedList<>();
+        // Verifica se o usuário está logado
+        if (!ServletAreaRestrita.ehLogado(request, response, erros)) {
+            response.sendRedirect(request.getContextPath()); // redireciona para login
+            return;
+        }
+
         String action = request.getParameter("action");
         if (action == null) {
             listarAdministradores(request, response);
             return;
         }
+
         switch (action) {
             case "excluir" -> excluirAdministrador(request, response);
             case "alterar" -> editarAdministrador(request, response);
             case "adicionar" -> inserirAdministrador(request, response);
             default -> listarAdministradores(request, response);
         }
-
     }
+
 
     /**
      * Busca todos os administradores da empresa e os encaminha para a página de listagem (JSP).
@@ -78,7 +87,7 @@ public class ServletAdministracao extends HttpServlet {
         request.setAttribute("administradores", administradores);
 
         RequestDispatcher dispatcher =
-                request.getRequestDispatcher("WEB-INF/views/administradores.jsp");
+                request.getRequestDispatcher("WEB-INF/views/admin.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -143,17 +152,9 @@ public class ServletAdministracao extends HttpServlet {
                 if (admin == null || admin.isEmpty()) {
                     erros.add("Erro: Administrador não encontrado");
                 } else {
-                    // Lógica específica que requer o ID de permissões para a exclusão.
-                    Integer idPerm = admin.get(0).getPermissoes().getId();
-
-                    if (idPerm == null) {
-                        erros.add("Erro: Permissão não encontrada para este administrador");
-                    }
-                    else {
-                        boolean excluido = administradorDao.deletarAdministrador(idPerm, adminId);
-                        if (!excluido) {
-                            erros.add("Erro: Não foi possível excluir o administrador");
-                        }
+                    boolean excluido = administradorDao.deletarAdministrador(adminId);
+                    if (!excluido) {
+                        erros.add("Erro: Não foi possível excluir o administrador");
                     }
                 }
             }
@@ -169,6 +170,7 @@ public class ServletAdministracao extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/administracao");
         }
     }
+
 
     /**
      * Processa a alteração dos dados de um administrador.

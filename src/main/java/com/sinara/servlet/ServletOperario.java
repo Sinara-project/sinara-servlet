@@ -69,11 +69,13 @@ public class ServletOperario extends HttpServlet {
         // Map para armazenar nomes de empresas já buscados e evitar consultas repetidas ao banco.
         Map<Integer, String> idParaNome = new HashMap<>();
         List<Operario> listaOperarios = null;
+        List<Empresa> listaEmpresas = null;
 
         try {
             OperarioDAO operarioDao = new OperarioDAO();
             EmpresaDAO empresaDao = new EmpresaDAO();
 
+            listaEmpresas = empresaDao.listarEmpresas();
             listaOperarios = operarioDao.listarOperarios();
             // Para cada operário na lista, busca o nome da empresa associada.
             for (Operario operario : listaOperarios) {
@@ -96,7 +98,8 @@ public class ServletOperario extends HttpServlet {
             // Garante que os atributos sejam enviados para a JSP mesmo que ocorra um erro.
             request.setAttribute("listaOperarios", listaOperarios);
             request.setAttribute("idParaNome", idParaNome);
-            request.getRequestDispatcher("WEB-INF/views/operarios.jsp").forward(request,response);
+            request.setAttribute("listaEmpresas", listaEmpresas);
+            request.getRequestDispatcher("WEB-INF/views/funcionario.jsp").forward(request,response);
         }
     }
 

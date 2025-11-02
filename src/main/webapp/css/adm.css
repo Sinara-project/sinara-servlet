@@ -1,7 +1,7 @@
 :root{
-   
+
     /* Paleta de cores */
- 
+
     --laranja-sinara:#FF7655;
     --salmao-sinara:#FFC1B2;
     --azul-sinara07:#384994;
@@ -11,18 +11,18 @@
     --corna: bolder;
     --laranja-hover:#D3422C;
     --cor-borda:#BFC7E8;
- 
+
     /* Tamanhos de fonte */
- 
+
     --titulos-secoes: 2.3rem;
     --descricoes: 1.8rem;
- 
+
     /* Max width da tela*/
- 
+
     --tamanho-tela: 1400px;
 }
- 
-#botao-adicionar{    
+
+#botao-adicionar{
     background: #FF7A59;
     color: white;
     border: none;
@@ -63,7 +63,7 @@ a{
 table{
     margin: 0 auto;
     padding: 2rem;
- 
+
 }
 th{
     color: var(--fonte-azul);
@@ -76,9 +76,9 @@ td{
     font-size: 1.2rem;
     padding-right: 10vw;
 }
- 
+
 /* Janela de adicionar administrador */
- 
+
 #btnAdicionarFunc {
     background: #FF7A59;
     color: white;
@@ -89,11 +89,11 @@ td{
     cursor: pointer;
     transition: 0.2s;
 }
- 
+
 #btnAdicionarFunc:hover {
     background: var(--laranja-hover);
 }
- 
+
 .modal {
     display: none;
     position: fixed;
@@ -104,7 +104,7 @@ td{
     justify-content: center;
     align-items: center;
 }
- 
+
 .modal-content {
     background: #fff;
     padding: 45px;
@@ -113,13 +113,13 @@ td{
     text-align: center;
     box-shadow: 0px 10px 20px rgba(0,0,0,0.15);
 }
- 
+
 .modal-content h2 {
     color: #002E66;
     margin-bottom: 25px;
     font-weight: bold;
 }
- 
+
 .input-group {
     margin-bottom: 15px;
     display: flex;
@@ -127,18 +127,25 @@ td{
     border: 1.5px solid #C5D7E0;
     border-radius: 10px;
     padding: 6px 10px;
- 
+
 }
- 
+
 .input-group img {
     width: 22px;
     margin-right: 10px;
 }
- 
+
 .input-group input {
     border: none;
     outline: none;
     flex: 1;
     font-size: 15px;
     padding-right: 100px;
+}
+
+
+
+#tabula {
+    height: 500px;
+    overflow: scroll;
 }
