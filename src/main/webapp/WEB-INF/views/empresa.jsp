@@ -70,7 +70,9 @@
                     </button>
                     <div class="menu-opcoes">
                         <button class="btn-editar">Editar</button>
-                        <a href="empresas?action=excluir&id=<%=empresa.getId()%>"><button>Excluir</button></a>
+                        <form action="empresas?action=excluir&id=<%=empresa.getId()%>" method="post">
+                            <input type="submit" value="Excluir">
+                        </form>
                     </div>
                 </div>
             </td>
