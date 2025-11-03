@@ -37,8 +37,6 @@ public class ServletOperario extends HttpServlet {
         }
         switch (action) {
             case "listar" -> listarOperarios(request,response);
-            case "editar" -> buscarFuncionario(request,response);
-            case "adicionar" -> adicionarOperario(request, response);
             default -> listarOperarios(request, response);
         }
     }
@@ -244,24 +242,6 @@ public class ServletOperario extends HttpServlet {
                 request.getSession().setAttribute("erros", erros);
                 response.sendRedirect(request.getContextPath() + "/operarios");
             }
-        }
-    }
-
-    /**
-     * Prepara o formulário de adição de operário, carregando a lista de empresas disponíveis.
-     */
-    private void adicionarOperario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Busca todas as empresas para popular um campo <select> no formulário de inserção.
-            EmpresaDAO empresaDao = new EmpresaDAO();
-            List<Empresa> listaEmpresas = empresaDao.listarEmpresas();
-            request.setAttribute("empresas",listaEmpresas);
-            RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("WEB-INF/views/inserirOperario.jsp");
-            dispatcher.forward(request,response);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
