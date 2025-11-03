@@ -37,9 +37,11 @@ public class EmpresaServlet extends HttpServlet {
                 default -> {
                     List<Empresa> empresas = empDao.listarEmpresas();
                     req.setAttribute("empresas", empresas);
-                    req.getRequestDispatcher("/WEB-INF/views/config_industria.jsp");
+                    req.getRequestDispatcher("/WEB-INF/views/config_industria.jsp").forward(req, resp);
                 }
             }
+        } else {
+            resp.sendRedirect(req.getContextPath());
         }
     }
 
@@ -52,11 +54,17 @@ public class EmpresaServlet extends HttpServlet {
             }
             case "adicionar" -> {
                 adicionarEmpresa(req, resp);
-            } case "excluir" -> {
+            }
+            case "excluir" -> {
                 excluirEmpresa(req, resp);
             }
-            default -> {
+            case "listar" -> {
                 listarEmpresas(req, resp);
+            }
+            default -> {
+                List<Empresa> empresas = empDao.listarEmpresas();
+                req.setAttribute("empresas", empresas);
+                req.getRequestDispatcher("/WEB-INF/views/config_industria.jsp").forward(req, resp);
             }
         }
     }
@@ -98,16 +106,15 @@ public class EmpresaServlet extends HttpServlet {
             }
             if (erros.isEmpty()) {
                 req.setAttribute("mensagem", "Empresa registrada com sucesso!");
-                req.getRequestDispatcher("/empresas?action=listar").forward(req, resp);
+                req.getRequestDispatcher("/empresas?action=inicio").forward(req, resp);
             } else {
-                req.setAttribute("empresa", empresa);
                 req.setAttribute("erro", erros);
                 req.getRequestDispatcher("/empresas?action=add").forward(req, resp);
             }
         } else {
             req.setAttribute("empresa", empresa);
             req.setAttribute("erro", erros);
-            req.getRequestDispatcher("/WEB-INF/views/empresa.jsp").forward(req, resp);
+            req.getRequestDispatcher("empresas?action=inicio").forward(req, resp);
         }
     }
     public void atualizarEmpresa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

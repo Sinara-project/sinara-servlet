@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.sinara.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="mensagens">
   <%

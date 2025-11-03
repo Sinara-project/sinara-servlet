@@ -1,4 +1,3 @@
-<%@ page import="com.sinara.model.Empresa" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.sinara.model.VisaoGeral" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -92,5 +91,6 @@
 </main>
 
 <script src="<%=request.getContextPath()%>/JavaScript/tabela2.js"></script>
+<script src="<%=request.getContextPath()%>/JavaScript/pesquisa.js"></script>
 </body>
 </html>

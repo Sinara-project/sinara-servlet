@@ -23,7 +23,6 @@
 
 <main>
     <%@include file="/padrao/lista-superior.jsp"%>
-    <%@include file="/padrao/mensagens.jsp"%>
     <!-- Modal de Adicionar Empresa -->
     <div id="modal-func" class="modal">
         <form class="modal-content" action="<%=request.getContextPath()%>/empresas?action=adicionar" method="post">
@@ -85,6 +84,7 @@
                 </label>
             </div>
             <button class="botao" type="submit">Adicionar</button>
+            <%@include file="/padrao/mensagens.jsp"%>
         </form>
     </div>
 
