@@ -1,0 +1,257 @@
+/* Fonte importada */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: "Montserrat", sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+:root{
+    
+    /* Paleta de cores */
+
+    --laranja-sinara:#FF7655; 
+    --salmao-sinara:#FFC1B2; 
+    --azul-sinara07:#384994; 
+    --azul-claro-gradient:#4082A7;
+    --fonte-azul:#0B1854;
+    --branco:#fff;
+    --cinza: #748086;
+    --laranja-hover:#D3422C;
+    --cor-borda:#BFC7E8;
+
+    /* Tamanhos de fonte */
+
+    --titulos-secoes: 2.3rem;
+    --descricoes: 1.8rem;
+
+    /* Max width da tela*/
+
+    --tamanho-tela: 1400px;
+
+}
+
+/* Header */
+
+header { 
+    background: var(--branco);
+    padding: 1.5rem 3rem;
+    border-bottom: 3px solid #D1D9F8;
+}
+
+#comece {
+    background-color: var(--laranja-sinara);
+    color: var(--branco);
+}
+
+#comece_ja { 
+    color: var(--branco);
+}
+
+.cabecalho {
+    display: flex;
+    margin: 0 auto;
+    max-width: var(--tamanho-tela);
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.cabecalho > img {
+    max-width: 5rem;
+    margin-right: auto;
+}
+
+.botao-header {
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 8rem;
+    text-align: center;
+    border-radius: 8px;
+    border:none;
+    transition: background-color 0.4s;
+}
+
+.botoes-nav {
+    display: flex;
+    align-items: center; 
+    gap: 1.5rem; 
+}
+
+#ajuda {
+    background: none;
+    color: var(--azul-sinara07)
+}
+
+#ajuda:hover {
+    background-color: #D9E9F4;
+}
+
+#contato {
+    color: var(--fonte-azul);
+    background-color: #D9DEF2;
+}
+
+#comece:hover {
+    background-color: var(--laranja-hover)
+}
+
+#contato:hover {
+    background-color: #ACB7DF;
+}
+
+#a_contato {
+    color: var(--azul-sinara07);
+}
+
+/* Seção principal */
+
+#caminhos {
+    margin: 4rem 8.5vw 2rem 8.5vw;
+    color: var(--cinza);
+    font-size: 1rem;
+}
+
+.links-caminhos {
+    text-decoration: none;
+    color: var(--cinza);
+}
+
+.links-caminhos:hover {
+    color: var(--laranja-sinara);
+}
+
+#titulo {
+    font-size: 2.5rem;
+    color: var(--fonte-azul);
+    font-weight: 600;
+}
+
+#barra-pesquisa {
+    border: 2px solid var(--laranja-sinara);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 30rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#barra-pesquisa input {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    margin-left: 1rem;
+    top: 2.3vh;
+    position: absolute;
+    width: 26rem;
+    font-size: 1.2rem;
+    color: var(--fonte-azul);
+}
+
+#container-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 8.5vw 6vh 8.5vw;
+}
+
+#containers-artigos {
+    display: flex;
+    gap: 8vw;
+    color: var(--fonte-azul);
+    font-weight: 400;
+}
+
+#container-artigos,#container2-artigos {
+    display: flex;
+    flex-direction: column;
+    width: 33vw;
+    gap: 12vh;
+}
+
+#container-artigos {
+    margin: 0 8.5vw 25vh 8.5vw;
+}
+
+#container-artigos a:hover, #container2-artigos a:hover {
+    color: var(--laranja-sinara);
+}
+
+.artigo {
+    font-size: 1.3rem;
+    text-decoration: none;
+}
+
+
+/* Footer */
+
+footer {
+    background-color: var(--azul-sinara07);
+    padding: 50px;
+    color: var(--branco);
+    text-align: center;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+
+    header {
+        padding: 1rem 1.5rem;
+    }
+
+    .cabecalho {
+        flex-wrap: wrap;
+        justify-content: center; 
+        gap: 1rem;
+    }
+
+    .cabecalho > img {
+        margin-right: 0;
+    }
+
+    .botoes-nav {
+        gap: 1rem;
+        margin-right: 0; 
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .botao-header {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        width: 7rem;
+    }
+
+    .artigos {
+        font-size: 1.1rem;
+        width: 90%;
+    }
+
+    #container-superior {
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    #barra-pesquisa {
+        width: 20rem;
+    }
+
+    #barra-pesquisa input {
+        width: 16rem;
+    }
+
+    #container-artigos {
+        width: 100%;
+        margin: 0 2rem 25vh 2rem;
+    }
+}

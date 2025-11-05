@@ -46,10 +46,11 @@ public class ServletHome extends HttpServlet {
             case "logout" -> logOut(req, resp);
         }
     }
-    private void cadastrarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void cadastrarAdmin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            AdministradorDAO admDao = new AdministradorDAO();
             String idEmpresa = req.getParameter("cnpjEmpresa");
+            if (idEmpresa.equals("11")) erros.add("* Empresa selecionada não disponível");
+            AdministradorDAO admDao = new AdministradorDAO();
             Administrador adm = new Administrador(req.getParameter("nome"), req.getParameter("email"),
                     req.getParameter("senha"), req.getParameter("cpf"), req.getParameter("cargo"),
                     Integer.parseInt(idEmpresa));
