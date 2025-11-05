@@ -54,10 +54,9 @@ public class ServletAreaRestrita extends HttpServlet {
                     req.getRequestDispatcher("/administracao").forward(req, resp);
                 }
             }
-        } else {
-            req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
-            erros.clear();
+        }
+        else {
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
     @Override
@@ -83,6 +82,7 @@ public class ServletAreaRestrita extends HttpServlet {
         } catch (IndexOutOfBoundsException exc) {
             erros.add("* Credenciais incorretas");
         } finally {
+            req.getSession().setAttribute("erro", erros);
             if
             (erros.isEmpty()) resp.sendRedirect(req.getContextPath() + "/arearestrita");
             else

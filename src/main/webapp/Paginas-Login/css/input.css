@@ -1,0 +1,57 @@
+form {
+    width: 25%;
+}
+
+input, select {
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+    padding: 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+#password {
+    background: url('/sinara_servlet_war_exploded/Paginas-Login/img/block.svg'), url('/sinara_servlet_war_exploded/Paginas-Login/img/linha.svg');
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-position-x: 10px, 35px;
+    background-color: white;
+    background-size: 19px, 2.5px;
+    padding-left: 42px;
+    border: solid #BFD4E3 2px;
+}
+
+#email {
+    background: url('/sinara_servlet_war_exploded/Paginas-Login/img/email.svg'), url('/sinara_servlet_war_exploded/Paginas-Login/img/linha.svg');
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-position-x: 8px, 35px;
+    background-color: white;
+    background-size: 22px, 2.5px;
+    padding-left: 42px;
+    border: solid #BFD4E3 2px;
+}
+
+#user {
+    background: url('/sinara_servlet_war_exploded/Paginas-Login/img/user.svg'), url('/sinara_servlet_war_exploded/Paginas-Login/img/linha.svg');
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-position-x: 8px, 35px;
+    background-color: white;
+    background-size: 22px, 2.5px;
+    padding-left: 42px;
+    border: solid #BFD4E3 2px;
+}
+
+#login {
+    margin: 10px 0px 10px 0px;
+    color: white;
+    background-color: #FF7655;
+    border: none;
+}
+
+@media (max-width: 1000px) {
+    form {
+        width: 80%;
+    }
+}

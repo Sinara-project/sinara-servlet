@@ -4,7 +4,7 @@
 <div id="mensagens">
   <%
     String mensagem = (String) request.getAttribute("mensagem");
-    List<String> erros = (List<String>) request.getAttribute("erro");
+    List<String> erros = (List<String>) request.getSession().getAttribute("erro");
     // Apresentar mensagens de erro ou sucesso
     if (erros!=null) for (String erro : erros) {
   %>
@@ -17,8 +17,8 @@
   <p style="color: green"><%=mensagem%> ✓</p>
   <%
     }
-    request.removeAttribute("mensagem");
-    request.removeAttribute("erro");
+    request.getSession().removeAttribute("mensagem");
+    request.getSession().removeAttribute("erro");
     Empresa.nulo = false;
   %>
 </div>
