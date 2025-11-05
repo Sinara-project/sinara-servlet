@@ -29,18 +29,7 @@ public class ServletOperario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Roteia as requisições GET para os métodos apropriados com base no parâmetro "action".
-        String action = request.getParameter("action");
-        if (action == null) {
-            // A ação padrão, se nenhuma for especificada, é listar os operários.
-            listarOperarios(request,response);
-            return;
-        }
-        switch (action) {
-            case "listar" -> listarOperarios(request,response);
-            case "editar" -> buscarFuncionario(request,response);
-            case "adicionar" -> adicionarOperario(request, response);
-            default -> listarOperarios(request, response);
-        }
+        listarOperarios(request, response);
     }
 
     @Override
@@ -198,72 +187,8 @@ public class ServletOperario extends HttpServlet {
         }
     }
 
-    /**
-     * Busca um funcionário específico pelo ID e o encaminha para a página de edição.
-     * Também busca o nome da empresa para exibição no formulário.
-     */
-    private void buscarFuncionario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<String> erros = new ArrayList<>();
-        try {
-            String idParam = request.getParameter("id");
-            if (idParam == null || idParam.trim().isEmpty()) {
-                erros.add("Erro: ID inválido");
-            } else {
-                int operarioId = Integer.parseInt(idParam);
-                EmpresaDAO empresaDao = new EmpresaDAO();
-                OperarioDAO operarioDAO = new OperarioDAO();
 
-                Operario operario = operarioDAO.buscarPorId(operarioId);
-                if (operario == null) {
-                    erros.add("Erro: Operário não encontrado");
-                } else {
-                    // Busca o nome da empresa para exibir na página de edição.
-                    int empresaId = operario.getIdEmpresa();
-                    Map<String, Object> filtro = new HashMap<>();
-                    filtro.put("id", empresaId);
-                    List<Empresa> empresas = empresaDao.buscarPorFiltro(filtro);
 
-                    if (empresas == null || empresas.isEmpty()) {
-                        erros.add("Empresa não encontrada");
-                    } else {
-                        String nomeEmpresa = empresas.get(0).getNome();
-                        request.setAttribute("operario", operario);
-                        request.setAttribute("nomeEmpresa", nomeEmpresa);
-                    }
-                }
-            }
-        } catch (NumberFormatException e) {
-            erros.add("Erro: ID inválido");
-        } finally {
-            if (erros.isEmpty()) {
-                // Se não houver erros, encaminha para a página de edição.
-                request.getRequestDispatcher("WEB-INF/views/editarOperario.jsp").forward(request,response);
-            } else {
-                // Se houver erros, armazena na sessão e redireciona para a listagem.
-                request.getSession().setAttribute("erros", erros);
-                response.sendRedirect(request.getContextPath() + "/operarios");
-            }
-        }
-    }
-
-    /**
-     * Prepara o formulário de adição de operário, carregando a lista de empresas disponíveis.
-     */
-    private void adicionarOperario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Busca todas as empresas para popular um campo <select> no formulário de inserção.
-            EmpresaDAO empresaDao = new EmpresaDAO();
-            List<Empresa> listaEmpresas = empresaDao.listarEmpresas();
-            request.setAttribute("empresas",listaEmpresas);
-            RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("WEB-INF/views/inserirOperario.jsp");
-            dispatcher.forward(request,response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Processa os dados do formulário para inserir um novo operário no banco de dados.

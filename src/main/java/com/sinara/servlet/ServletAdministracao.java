@@ -28,20 +28,7 @@ public class ServletAdministracao extends HttpServlet {
             throws ServletException, IOException {
         List<String> erros = new LinkedList<>();
         // Verifica se o usuário está logado
-
-
-        // Obtém o parâmetro "action" para rotear a requisição GET
-        String action = request.getParameter("action");
-        if (action == null) {
-            listarAdministradores(request, response);
-            return;
-        }
-
-        switch (action) {
-            case "editar" -> buscarAdministrador(request, response);
-            case "adicionar" -> adicionarAdministrador(request, response);
-            default -> listarAdministradores(request, response);
-        }
+        listarAdministradores(request,response);
     }
 
     @Override
@@ -91,44 +78,6 @@ public class ServletAdministracao extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    /**
-     * Busca um administrador específico pelo ID e o encaminha para a página de edição.
-     */
-    protected void buscarAdministrador(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<String> erros = new LinkedList<>();
-
-        try {
-            AdministradorDAO administradorDao = new AdministradorDAO();
-            String idParam = request.getParameter("id");
-            if (idParam == null || idParam.trim().isEmpty()) {
-                erros.add("Erro: Nenhum id foi informado");
-            } else {
-                int adminId = Integer.parseInt(idParam);
-                Map<String, Object> filtro = new HashMap<>();
-                filtro.put("id", adminId);
-                List<Administrador> administradores = administradorDao.buscarPorFiltro(filtro);
-
-                if (administradores == null || administradores.isEmpty()) {
-                    erros.add("Erro: nenhum admin com esse ID foi encontrado");
-                } else {
-                    request.setAttribute("administrador", administradores.get(0));
-                }
-            }
-        } catch (NumberFormatException e) {
-            erros.add("Erro: ID inválido");
-        } finally {
-            // Bloco finally para garantir que a resposta seja enviada, com ou sem erros.
-            if (erros.isEmpty()) {
-                // Se não houver erros, encaminha para a página de edição.
-                request.getRequestDispatcher("WEB-INF/views/administrador.jsp").forward(request,response);
-            } else {
-                // Se houver erros, armazena na sessão e redireciona para a listagem.
-                request.getSession().setAttribute("erros", erros);
-                response.sendRedirect(request.getContextPath() + "/administracao");
-            }
-        }
-    }
 
     /**
      * Exclui um administrador com base no ID fornecido.
@@ -230,16 +179,6 @@ public class ServletAdministracao extends HttpServlet {
         }
     }
 
-
-    /**
-     * Apenas encaminha a requisição para a página JSP que contém o formulário de adição.
-     */
-    protected void adicionarAdministrador(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher =
-                request.getRequestDispatcher("WEB-INF/views/adicionarAdministrador.jsp");
-        dispatcher.forward(request,response);
-    }
 
     /**
      * Processa os dados do formulário para inserir um novo administrador no banco de dados.

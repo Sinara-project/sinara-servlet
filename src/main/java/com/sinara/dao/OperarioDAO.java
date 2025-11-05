@@ -24,7 +24,8 @@ public class OperarioDAO {
         ResultSet rs = null;
         Integer idPermissao = 0;
         try {
-            conn = conexao.conectar(); // INSERT INTO operario (cpf, nome, email, cargo, cnpj_empresa) VALUES (?, ?, ?,
+            conn = conexao.conectar();
+            // INSERT INTO operario (cpf, nome, email, cargo, cnpj_empresa) VALUES (?, ?, ?,
             // ?, ?)"
             permstmt = conn.prepareStatement("INSERT INTO Permissoes (inserir_dados, editar_dados, visualizar_relatorios, aprovar_registros, gerenciar_usuarios) VALUES (?, ?, ?, ?, ?) RETURNING id");
             permstmt.setBoolean(1, operario.getPermissoes().temPermissao(1));
