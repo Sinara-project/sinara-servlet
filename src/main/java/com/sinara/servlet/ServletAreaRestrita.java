@@ -1,6 +1,7 @@
 package com.sinara.servlet;
 
 import com.sinara.dao.AdministradorDAO;
+import com.sinara.dao.ImagemDao;
 import com.sinara.model.Administrador;
 import com.sinara.utils.SenhaUtils;
 import jakarta.servlet.ServletException;
@@ -103,6 +104,7 @@ public class ServletAreaRestrita extends HttpServlet {
         resp.sendRedirect(req.getContextPath()+"/arearestrita");
     }
     private static void addLogin(HttpServletResponse resp, Administrador adm, HttpSession session) throws NullPointerException, IllegalArgumentException {
+        ImagemDao imagemDao = new ImagemDao();
         AdministradorDAO admDao = new AdministradorDAO();
         String token = UUID.randomUUID().toString();
         Cookie cookie = new Cookie("authAreaRestrita", adm.getEmail()+":"+token);
@@ -112,6 +114,7 @@ public class ServletAreaRestrita extends HttpServlet {
         admDao.inserirUUID(adm.getId(), token);
         resp.addCookie(cookie);
         session.setAttribute("user", adm.getNome());
+        session.setAttribute("img", imagemDao.buscarImagem(adm.getId()));
     }
     private boolean verificarCredenciais(String email, String senha) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException {
         if (email.isBlank() || senha.isBlank()) throw new NullPointerException();

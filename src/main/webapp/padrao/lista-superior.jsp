@@ -1,8 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String img = (String) request.getSession().getAttribute("img");
+    if (img == null || img.trim().isEmpty()) {
+        img = "https://res.cloudinary.com/dj7slvn3c/image/upload/v1762353841/j4ngrri4dl8z6r2vocig.png";
+    }
+%>
+
 <ul id="lista-superior">
     <li>
         <div id="perfil">
-            <div id="foto"></div>
+            <img id="foto" src="<%= img %>">
             <P>Bem-vindo,<br><b><%=request.getSession().getAttribute("user")%></b> </P>
         </div>
     </li>
